@@ -35,7 +35,7 @@ class Person
      * @ORM\OneToOne(targetEntity="User", mappedBy="person", cascade={"all"})
      * @ORM\JoinColumn(name="users_id", referencedColumnName="id", nullable=false)
      */
-    private int $user;
+    private User $user;
 
     /**
      * @return int
@@ -88,15 +88,15 @@ class Person
     /**
      * @return int
      */
-    public function getUser(): int
+    public function getUser(): User
     {
         return $this->user;
     }
 
     /**
-     * @param int $user
+     * @param User $user
      */
-    public function setUser(int $user): void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }

@@ -1,18 +1,21 @@
 <?php
 
+
 namespace App\Controller;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SomeController extends AbstractController
+class WishMapPageController extends AbstractController
 {
-    #[Route('/some', name: 'some')]
+    #[Route('/wishmap', name: 'wish_map')]
     public function index(): Response
     {
-        return $this->render('some/index.html.twig', [
-            'controller_name' => 'SomeController',
+        return $this->render('wish_map_page/index.html.twig', [
+            'controller_name' => 'WM',
         ]);
     }
+
 }
