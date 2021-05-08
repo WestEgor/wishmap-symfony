@@ -109,6 +109,9 @@
     "psr/log": {
         "version": "1.1.4"
     },
+    "symfony/asset": {
+        "version": "v5.2.7"
+    },
     "symfony/cache": {
         "version": "v5.2.7"
     },
@@ -225,6 +228,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/mime": {
+        "version": "v5.2.7"
+    },
     "symfony/monolog-bridge": {
         "version": "v5.2.7"
     },
@@ -252,6 +258,9 @@
     "symfony/polyfill-intl-icu": {
         "version": "v1.22.1"
     },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.22.1"
+    },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.22.1"
     },
@@ -263,9 +272,6 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.1"
-    },
-    "symfony/process": {
-        "version": "v5.2.7"
     },
     "symfony/property-access": {
         "version": "v5.2.4"
@@ -375,15 +381,6 @@
             "./config/packages/test/web_profiler.yaml",
             "./config/routes/dev/web_profiler.yaml"
         ]
-    },
-    "symfony/web-server-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
-        }
     },
     "symfony/yaml": {
         "version": "v5.2.7"

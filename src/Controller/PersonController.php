@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
+use App\Security\PersonAuthorization;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,10 +55,9 @@ class PersonController extends AbstractController
     #[Route('/profile/update', name: 'profile_update')]
     public function profileUpdate(Request $request, PersonRepository $personRepository): Response
     {
-        $user = $this->security->getUser();
-        $person = $personRepository->findOneBy(
-            ['user' => $user->getId()]
-        );
+        $personAuth = new PersonAuthorization($this->security);
+        $person = $personAuth->getLoggedPerson($personRepository);
+
         $form = $this->createForm(PersonType::class, $person);
         $form->handleRequest($request);
 
@@ -76,14 +76,12 @@ class PersonController extends AbstractController
     #[Route('/profile/check', name: 'check_profile')]
     public function checkProfileExistence(PersonRepository $personRepository): Response
     {
-        $user = $this->security->getUser();
-        $person = $personRepository->findOneBy(
-            ['user' => $user->getId()]
-        );
+        $personAuth = new PersonAuthorization($this->security);
+        $person = $personAuth->getLoggedPerson($personRepository);
         if ($person === null) {
             return $this->redirectToRoute('create_profile');
         }
         return $this->redirectToRoute('wish_map');
-
     }
+
 }

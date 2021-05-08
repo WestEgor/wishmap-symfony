@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello WM!{% endblock %}
+
+{% block body %}
+    {% include('inc/navbarWM.html.twig') %}
+    {% if wishmaps %}
+        {% for wishmap in wishmaps %}
+            <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="card-img-top" width="200" height="200"
+                             src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
+                             alt="Card image cap">
+                        <h4 class="card-title" style="font-family: 'Verdana', serif">{{ wishmap.category }}</h4>
+                        <p class="card-text" style="font-family: 'Courier New', serif">{{ wishmap.description }}</p>
+                        <div class="row">
+                            <label>Start date:</label>
+                            <p class="card-text" style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y') }} </p>
+                            <label style="margin-left:10px ">Finish date:</label>
+                            <p class="card-text" style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                        </div>
+                        <label for="disabledRange" class="form-label">Process:</label>
+                        <input type="range" class="form-range" id="disabledRange" value="{{ wishmap.process }}"
+                               disabled>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no WISHES!</p>
+    {% endif %}
+{% endblock %}

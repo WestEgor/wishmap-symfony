@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creating WM{% endblock %}
+
+{% block body %}
+    {% include('inc/navbarWM.html.twig') %}
+    {{ form_start(form) }}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            {{ form_row(form.image) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.startDate) }}
+            {{ form_row(form.finishDate) }}
+            {{ form_row(form.process) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+
+{% endblock %}

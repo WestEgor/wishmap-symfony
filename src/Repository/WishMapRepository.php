@@ -20,7 +20,7 @@ class WishMapRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return WishMap[] Returns an array of WishMap objects
+    //  * @return WishMapController[] Returns an array of WishMapController objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class WishMapRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?WishMap
+    public function findOneBySomeField($value): ?WishMapController
     {
         return $this->createQueryBuilder('w')
             ->andWhere('w.exampleField = :val')
