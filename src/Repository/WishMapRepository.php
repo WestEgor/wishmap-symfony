@@ -36,6 +36,16 @@ class WishMapRepository extends ServiceEntityRepository
     }
     */
 
+    public function findAllDistinctCategories(): array
+    {
+        return $this->createQueryBuilder('cat')
+            ->select('cat.category')
+            ->groupBy('cat.category')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     /*
     public function findOneBySomeField($value): ?WishMapController
     {

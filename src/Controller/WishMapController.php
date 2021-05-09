@@ -74,10 +74,12 @@ class WishMapController extends AbstractController
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
 
+        $categories = $wishMapRepository->findAllDistinctCategories();
         $wishMaps = $wishMapRepository->findBy(['person' => $person->getId()]);
 
         return $this->render('wish_map/index.html.twig', [
-            'wishmaps' => $wishMaps
+            'wishmaps' => $wishMaps,
+            'categories' => $categories
         ]);
     }
 

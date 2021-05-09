@@ -4,31 +4,51 @@
 
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
+    {% if categories %}
+        <div class="column left">
+            <p class="h3 category">Categories:</p>
+            {% for category in categories %}
+                {% for category_name in category %}
+                    <p class="h5 category">{{ category_name }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
     {% if wishmaps %}
-        {% for wishmap in wishmaps %}
-            <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <img class="card-img-top" width="200" height="200"
-                             src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
-                             alt="Card image cap">
-                        <h4 class="card-title" style="font-family: 'Verdana', serif">{{ wishmap.category }}</h4>
-                        <p class="card-text" style="font-family: 'Courier New', serif">{{ wishmap.description }}</p>
-                        <div class="row">
-                            <label>Start date:</label>
-                            <p class="card-text" style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y') }} </p>
-                            <label style="margin-left:10px ">Finish date:</label>
-                            <p class="card-text" style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+        <div class="row column right">
+            {% for wishmap in wishmaps %}
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="clearfix">
+                                <img class="card-img-top" style="max-width: 100%; height: auto"
+                                     src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
+                                     alt="Card image cap">
+                                <p class="h4 card-title category">{{ wishmap.category }}</p>
+                                <div class="progress">
+                                    <div id="progress-bar"  role="progressbar"
+                                         style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
+                                         aria-valuemin="0" aria-valuemax="100">{{ wishmap.process }}%
+                                    </div>
+                                </div>
+                                <p class="card-text description">{{ wishmap.description }}</p>
+                                <div class="row">
+                                    <label>Start date:</label>
+                                    <p class="card-text"
+                                       style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y') }} </p>
+                                    <label style="margin-left:10px ">Finish date:</label>
+                                    <p class="card-text"
+                                       style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                                </div>
+
+                            </div>
                         </div>
-                        <label for="disabledRange" class="form-label">Process:</label>
-                        <input type="range" class="form-range" id="disabledRange" value="{{ wishmap.process }}"
-                               disabled>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% else %}
         <p>You have no WISHES!</p>
     {% endif %}
+
 {% endblock %}
