@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Person;
 use App\Entity\WishMap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,14 @@ class WishMapRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, WishMap::class);
+    }
+
+    public function findByPerson(Person $person): QueryBuilder
+    {
+        return $this->createQueryBuilder('wm')
+            ->andWhere('wm.person = :person')
+            ->setParameter('person', $person)
+            ->orderBy('wm.finishDate');
     }
 
     // /**
@@ -57,4 +67,5 @@ class WishMapRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

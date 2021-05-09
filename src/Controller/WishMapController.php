@@ -1,14 +1,13 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\WishMap;
 use App\Form\WishMapType;
 use App\Repository\PersonRepository;
 use App\Repository\WishMapRepository;
 use App\Security\PersonAuthorization;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,16 +68,25 @@ class WishMapController extends AbstractController
     }
 
     #[Route('/wishmap', name: 'wish_map', methods: ['get'])]
-    public function index(WishMapRepository $wishMapRepository, PersonRepository $personRepository): Response
+    public function index(WishMapRepository $wishMapRepository, PersonRepository $personRepository,
+                          PaginatorInterface $paginator, Request $request): Response
     {
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
 
         $categories = $wishMapRepository->findAllDistinctCategories();
-        $wishMaps = $wishMapRepository->findBy(['person' => $person->getId()]);
+
+        $wishMaps = $wishMapRepository->findByPerson($person);
+
+        $pagination = $paginator->paginate(
+            $wishMaps,
+            $request->query->getInt('page', 1),
+            4
+        );
+
 
         return $this->render('wish_map/index.html.twig', [
-            'wishmaps' => $wishMaps,
+            'wishmaps' => $pagination,
             'categories' => $categories
         ]);
     }

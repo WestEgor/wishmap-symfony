@@ -20,3 +20,15 @@ p.category {
 p.description {
     font-family: "Times New Roman", serif;
 }
+
+.colarable {
+    background-color: #7eea12;
+}
+
+.someclass{
+    position: fixed;
+    bottom: 10%;
+    left: 30%;
+    width: 40%;
+    height: 20%;
+}
