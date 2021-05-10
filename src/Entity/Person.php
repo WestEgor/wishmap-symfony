@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PersonRepository;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  * @ORM\Table(name="`person`")
@@ -28,11 +29,8 @@ class Person
     private string $surname;
 
 
-    // private $avatar;
-
-
     /**
-     * @ORM\OneToOne(targetEntity="User", mappedBy="person", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="User")
      * @ORM\JoinColumn(name="users_id", referencedColumnName="id", nullable=false)
      */
     private User $user;
@@ -100,6 +98,7 @@ class Person
     {
         $this->user = $user;
     }
+
 
 
 }

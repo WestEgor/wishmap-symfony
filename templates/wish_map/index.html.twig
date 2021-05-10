@@ -5,15 +5,15 @@
 {% block body %}
     <script src="js/change_progress_bar_class.js"></script>
     {% include('inc/navbarWM.html.twig') %}
-    {% if categories %}
-        <div class="column left">
-            <p class="h3 category">Categories:</p>
-            {% for category in categories %}
-                {% for category_name in category %}
-                    <p class="h5 category">{{ category_name }}</p>
-                {% endfor %}
-            {% endfor %}
-        </div>
+
+
+    <div class="column left">
+        {% if categories %}
+        <p class="h3 category-main">Categories:</p>
+        {% for category in categories %}
+            <p class="h5 category">{{ category }}</p>
+        {% endfor %}
+    </div>
     {% endif %}
 
     {% if wishmaps %}
@@ -52,4 +52,6 @@
     {% endif %}
 
     <div class="someclass">{{ knp_pagination_render(wishmaps) }}</div>
+
+    <script src="js/person_search.js"></script>
 {% endblock %}

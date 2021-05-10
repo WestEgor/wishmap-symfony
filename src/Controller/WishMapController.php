@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\WishMap;
 use App\Form\WishMapType;
+use App\Repository\CategoryRepository;
 use App\Repository\PersonRepository;
 use App\Repository\WishMapRepository;
 use App\Security\PersonAuthorization;
@@ -67,16 +68,18 @@ class WishMapController extends AbstractController
         ]);
     }
 
-    #[Route('/wishmap', name: 'wish_map', methods: ['get'])]
+    #[Route('/wishmap', name: 'wish_map', methods: ['get', 'post'])]
     public function index(WishMapRepository $wishMapRepository, PersonRepository $personRepository,
-                          PaginatorInterface $paginator, Request $request): Response
+                          PaginatorInterface $paginator, CategoryRepository $categoryRepository, Request $request): Response
     {
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
 
-        $categories = $wishMapRepository->findAllDistinctCategories();
+        $categories = $categoryRepository->findOneBySomeField($person);
+
 
         $wishMaps = $wishMapRepository->findByPerson($person);
+
 
         $pagination = $paginator->paginate(
             $wishMaps,
@@ -90,5 +93,6 @@ class WishMapController extends AbstractController
             'categories' => $categories
         ]);
     }
+
 
 }

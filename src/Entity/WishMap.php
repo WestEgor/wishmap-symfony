@@ -25,9 +25,10 @@ class WishMap
     private string $image;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToOne (targetEntity="Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
      */
-    private string $category;
+    private Category $category;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,7 +36,7 @@ class WishMap
     private string $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"}))
      */
     private DateTime $startDate;
 
@@ -45,7 +46,7 @@ class WishMap
     private DateTime $finishDate;
 
     /**
-     * @ORM\Column(type="float", options={"default" : 0})
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
      */
     private float $process;
 
@@ -103,7 +104,6 @@ class WishMap
     {
         $this->category = $category;
     }
-
 
 
     public function setDescription(string $description): self

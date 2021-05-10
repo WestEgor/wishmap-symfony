@@ -4,3 +4,4 @@ twig:
   strict_variables: "%kernel.debug%"
   auto_reload: true
   optimizations: -1
+  cache: false

@@ -27,6 +27,55 @@ class Comments
      * @ORM\ManyToOne(targetEntity="Person")
      * @ORM\JoinColumn(name="send_persons_id", referencedColumnName="id", nullable=false)
      */
-    private int $sendPerson;
+    private Person $sendPerson;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSendPerson(): Person
+    {
+        return $this->sendPerson;
+    }
+
+    /**
+     * @param  $sendPerson
+     */
+    public function setSendPerson($sendPerson): void
+    {
+        $this->sendPerson = $sendPerson;
+    }
+
 
 }

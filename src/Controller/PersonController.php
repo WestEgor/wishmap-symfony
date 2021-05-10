@@ -84,4 +84,6 @@ class PersonController extends AbstractController
         return $this->redirectToRoute('wish_map');
     }
 
+
+
 }
