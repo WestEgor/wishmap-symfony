@@ -25,7 +25,7 @@ class WishMap
     private string $image;
 
     /**
-     * @ORM\OneToOne (targetEntity="Category")
+     * @ORM\ManyToOne (targetEntity="Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
      */
     private Category $category;
@@ -57,10 +57,13 @@ class WishMap
     private Person $person;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Comments")
-     * @ORM\JoinColumn(name="comments_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Comments")
+     * @ORM\JoinTable(name="wish_map_comments",
+     *      joinColumns={@ORM\JoinColumn(name="wish_map_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id", unique=true)}
+     *      )
      */
-    private Comments $comments;
+    private  $comments;
 
 
     public function getId(): ?int
@@ -92,15 +95,15 @@ class WishMap
     /**
      * @return string
      */
-    public function getCategory(): string
+    public function getCategory()
     {
         return $this->category;
     }
 
     /**
-     * @param string $category
+     * @param  $category
      */
-    public function setCategory(string $category): void
+    public function setCategory($category): void
     {
         $this->category = $category;
     }
@@ -172,7 +175,7 @@ class WishMap
     /**
      * @return Comments
      */
-    public function getComments(): Comments
+    public function getComments()
     {
         return $this->comments;
     }
@@ -180,10 +183,12 @@ class WishMap
     /**
      * @param Comments $comments
      */
-    public function setComments(Comments $comments): void
+    public function setComments( $comments): void
     {
         $this->comments = $comments;
     }
+
+
 
 
 }

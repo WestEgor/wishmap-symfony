@@ -4,15 +4,14 @@
 namespace App\Repository;
 
 use App\Entity\Comments;
-use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Person|null find($id, $lockMode = null, $lockVersion = null)
- * @method Person|null findOneBy(array $criteria, array $orderBy = null)
- * @method Person[]    findAll()
- * @method Person[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Comments|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Comments|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Comments[]    findAll()
+ * @method Comments[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CommentsRepository extends ServiceEntityRepository
 {
