@@ -9,26 +9,31 @@
 }
 
 .right {
+    margin-top: 5px;
     width: 75%;
 }
 
-p.category-main {
+a.category-main {
     margin-top: 100px;
-    position:relative;
+    position: relative;
     font-family: "Courier New", serif;
     font-weight: bold;
 }
-p.category{
+
+.category {
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-family: "Courier New", serif;
     font-weight: bold;
 }
+
 
 p.description {
     font-family: "Times New Roman", serif;
 }
 
 
-.someclass{
+.someclass {
     position: fixed;
     bottom: 10%;
     left: 30%;

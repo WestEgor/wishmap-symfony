@@ -4,16 +4,25 @@
 
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
-    <link rel="stylesheet" href="{{ asset('css/main1.css') }}">
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
 
 
     <div class="column left">
         {% if categories %}
-        <a class="h3 category-main" href="/wishmap">Categories:</a>
-        {% for category in categories %}
-            <a class="h5 category" href="/wishmap/category/{{ category.id }}">{{ category.name }}</a>
-        {% endfor %}
+        <table>
+            <thead>
+            <a class="h3 category-main" href="/wishmap">Categories:</a>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>
+                        <a class="h5 category" href="/wishmap/category/{{ category.id }}">{{ category.name }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
     {% endif %}
 
