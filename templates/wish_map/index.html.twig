@@ -11,7 +11,7 @@
         {% if categories %}
         <p class="h3 category-main">Categories:</p>
         {% for category in categories %}
-            <p class="h5 category">{{ category }}</p>
+            <p class="h5 category">{{ category.name }}</p>
         {% endfor %}
     </div>
     {% endif %}
@@ -22,9 +22,20 @@
                 <div class="col-3">
                     <div class="card">
                         <div class="card-body">
-                            <img class="card-img-top" style="max-width: 100%; height: auto"
-                                 src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
-                                 alt="Card image cap">
+                            {% if wishmap.image %}
+                                <img class="card-img-top" style="max-width: 100%; height: auto"
+                                     src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
+                                     alt="Card image cap">
+                            {% endif %}
+
+                            {% if wishmap.category_id %}
+                                {% for category in categories %}
+                                    {% if category.id == wishmap.category_id %}
+                                        <p class="card-text description">{{ category.name }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"

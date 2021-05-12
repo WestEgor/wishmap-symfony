@@ -37,6 +37,7 @@
         "symfony/debug-bundle": "5.2.*",
         "symfony/maker-bundle": "^1.30",
         "symfony/stopwatch": "^5.2",
+        "symfony/var-dumper": "5.2.*",
         "symfony/web-profiler-bundle": "^5.2"
     },
     "config": {

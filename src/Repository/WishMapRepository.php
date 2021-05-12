@@ -24,48 +24,12 @@ class WishMapRepository extends ServiceEntityRepository
     public function findByPerson(Person $person): QueryBuilder
     {
         return $this->createQueryBuilder('wm')
+            ->select('wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
+            identity(wm.category) AS category_id')
             ->andWhere('wm.person = :person')
             ->setParameter('person', $person)
             ->orderBy('wm.finishDate');
     }
 
-    // /**
-    //  * @return WishMapController[] Returns an array of WishMapController objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    public function findAllDistinctCategories(): array
-    {
-        return $this->createQueryBuilder('cat')
-            ->select('cat.category')
-            ->groupBy('cat.category')
-            ->getQuery()
-            ->getResult();
-    }
-
-
-    /*
-    public function findOneBySomeField($value): ?WishMapController
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 
 }

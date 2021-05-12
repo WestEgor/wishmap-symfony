@@ -26,7 +26,7 @@ class WishMap
 
     /**
      * @ORM\ManyToOne (targetEntity="Category")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=true)
      */
     private ?Category $category;
 
@@ -63,7 +63,7 @@ class WishMap
      *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id", unique=true)}
      *      )
      */
-    private ?Comments $comments;
+    private Comments $comments;
 
 
     public function getId(): ?int
