@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Person;
 use App\Entity\WishMap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -31,5 +32,14 @@ class WishMapRepository extends ServiceEntityRepository
             ->orderBy('wm.finishDate');
     }
 
+    public function findByCategory(array $category): QueryBuilder
+    {
+        return $this->createQueryBuilder('wm')
+            ->select('wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
+            identity(wm.category) AS category_id')
+            ->andWhere('wm.category = :category')
+            ->setParameter('category', $category)
+            ->orderBy('wm.finishDate');
+    }
 
 }

@@ -3,15 +3,16 @@
 {% block title %}Hello WM!{% endblock %}
 
 {% block body %}
-    <script src="js/change_progress_bar_class.js"></script>
     {% include('inc/navbarWM.html.twig') %}
+    <link rel="stylesheet" href="{{ asset('css/main1.css') }}">
+    <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
 
 
     <div class="column left">
         {% if categories %}
-        <p class="h3 category-main">Categories:</p>
+        <a class="h3 category-main" href="/wishmap">Categories:</a>
         {% for category in categories %}
-            <p class="h5 category">{{ category.name }}</p>
+            <a class="h5 category" href="/wishmap/category/{{ category.id }}">{{ category.name }}</a>
         {% endfor %}
     </div>
     {% endif %}
@@ -31,7 +32,7 @@
                             {% if wishmap.category_id %}
                                 {% for category in categories %}
                                     {% if category.id == wishmap.category_id %}
-                                        <p class="card-text description">{{ category.name }}</p>
+                                        <p class="card-text category">{{ category.name }}</p>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -44,11 +45,8 @@
                             </div>
                             <p class="card-text description">{{ wishmap.description }}</p>
                             <div class="row">
-                                <label>Start date:</label>
-                                {% if (wishmap.startDate is null) %}
-                                    <p class="card-text"
-                                       style="margin-left:10px "> --- </p>
-                                {% else %}
+                                {% if (wishmap.startDate) %}
+                                    <label>Start date:</label>
                                     <p class="card-text"
                                        style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
                                 {% endif %}
@@ -66,8 +64,6 @@
         <p>You have no WISHES!</p>
     {% endif %}
 
-
     <div class="someclass">{{ knp_pagination_render(wishmaps) }}</div>
 
-    <script src="js/person_search.js"></script>
 {% endblock %}

@@ -12,13 +12,13 @@
     width: 75%;
 }
 
-p.category-main {
+.category-main {
     margin-top: 100px;
     position:relative;
     font-family: "Courier New", serif;
     font-weight: bold;
 }
-p.category{
+.category{
     font-family: "Courier New", serif;
     font-weight: bold;
 }

@@ -66,9 +66,34 @@ class WishMapController extends AbstractController
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
 
-        $categories = $categoryRepository->findOneBySomeField($person);
+        $categories = $categoryRepository->findAllCategoriesByPerson($person);
 
         $wishMaps = $wishMapRepository->findByPerson($person);
+
+        $pagination = $paginator->paginate(
+            $wishMaps,
+            $request->query->getInt('page', 1),
+            4
+        );
+
+
+        return $this->render('wish_map/index.html.twig', [
+            'wishmaps' => $pagination,
+            'categories' => $categories
+        ]);
+    }
+
+    #[Route('/wishmap/category/{id}', name: 'wish_map_category', methods: ['get', 'post'])]
+    public function selectCat(WishMapRepository $wishMapRepository, PersonRepository $personRepository,
+                              PaginatorInterface $paginator, CategoryRepository $categoryRepository,
+                              Request $request, $id): Response
+    {
+        $personAuth = new PersonAuthorization($this->security);
+        $person = $personAuth->getLoggedPerson($personRepository);
+
+        $categories = $categoryRepository->findAllCategoriesByPerson($person);
+        $category = $categoryRepository->findOneCategoryByCategoryId($id);
+        $wishMaps = $wishMapRepository->findByCategory($category);
 
         $pagination = $paginator->paginate(
             $wishMaps,
