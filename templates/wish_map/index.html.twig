@@ -5,6 +5,7 @@
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
+    <script src="{{ asset('js/delete_wm.js') }}"></script>
 
 
     <div class="column left">
@@ -30,7 +31,7 @@
         <div class="row column right" id="card">
             {% for wishmap in wishmaps %}
                 <div class="col-3">
-                    <div class="card">
+                    <div class="card" id="card-body">
                         <div class="card-body">
                             {% if wishmap.image %}
                                 <img class="card-img-top" style="max-width: 100%; height: auto"
@@ -49,7 +50,8 @@
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
-                                     aria-valuemin="0" aria-valuemax="100">{{ wishmap.process }}%
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    <span>{{ wishmap.process }}%</span>
                                 </div>
                             </div>
                             <p class="card-text description">{{ wishmap.description }}</p>
@@ -64,6 +66,8 @@
                                    style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
+                        <a class="btn btn-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
+                        <a class="btn btn-danger margin" id="delete-wishmap" data-id="{{wishmap.id}}" >Delete</a>
                     </div>
                 </div>
             {% endfor %}

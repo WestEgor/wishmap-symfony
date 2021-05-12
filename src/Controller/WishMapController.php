@@ -108,5 +108,15 @@ class WishMapController extends AbstractController
         ]);
     }
 
+    #[ROUTE('/wishmap/delete/{id}', name: 'wishmap_delete', methods: ['delete', 'get'])]
+    public function deleteWishMap(int $id, WishMapRepository $wishMapRepository)
+    {
+        $wishMap = $wishMapRepository->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($wishMap);
+        $entityManager->flush();
+        $response = new Response();
+        return $response->send();
+    }
 
 }

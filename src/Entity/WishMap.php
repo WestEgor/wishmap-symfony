@@ -57,13 +57,14 @@ class WishMap
     private Person $person;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Comments")
+     * @ORM\ManyToMany(targetEntity="Comments", cascade={"persist","remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="wish_map_comments",
      *      joinColumns={@ORM\JoinColumn(name="wish_map_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id",
+     *      unique=true)}
      *      )
      */
-    private Comments $comments;
+    private  $comments;
 
 
     public function getId(): ?int
@@ -95,10 +96,8 @@ class WishMap
     }
 
 
-    /**
-     * @return Category|null
-     */
-    public function getCategory(): ?Category
+
+    public function getCategory()
     {
         return $this->category;
     }
