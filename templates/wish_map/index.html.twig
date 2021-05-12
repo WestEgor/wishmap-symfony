@@ -6,11 +6,12 @@
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
     <script src="{{ asset('js/delete_wm.js') }}"></script>
+    <script src="{{ asset('js/delete_category.js') }}"></script>
 
 
     <div class="column left">
         {% if categories %}
-        <table>
+        <table id="categories">
             <thead>
             <a class="h3 category-main" href="/wishmap">Categories:</a>
             <a class="btn btn-primary" href="/wishmap/category/create">Create</a>
@@ -20,7 +21,8 @@
                 <tr>
                     <td>
                         <a class="h5 category" href="/wishmap/category/{{ category.id }}">{{ category.name }}</a>
-                        <a class="btn btn-danger" href="/wishmap/category/{{ category.id }}">Delete</a>
+                        <a class="btn btn-danger delete-category" data-id="{{ category.id }}">Delete</a>
+                        <a class="btn btn-danger" href="/wishmap/category/update/{{ category.id }}">Update</a>
                     </td>
                 </tr>
             {% endfor %}
