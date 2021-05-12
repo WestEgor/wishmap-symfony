@@ -35,7 +35,7 @@ class WishMapRepository extends ServiceEntityRepository
     public function findByCategory(array $category): QueryBuilder
     {
         return $this->createQueryBuilder('wm')
-            ->select('wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
+            ->select('wm.id, wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
             identity(wm.category) AS category_id')
             ->andWhere('wm.category = :category')
             ->setParameter('category', $category)

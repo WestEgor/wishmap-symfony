@@ -13,12 +13,14 @@
         <table>
             <thead>
             <a class="h3 category-main" href="/wishmap">Categories:</a>
+            <a class="btn btn-primary" href="/wishmap/category/create">Create</a>
             </thead>
             <tbody>
             {% for category in categories %}
                 <tr>
                     <td>
                         <a class="h5 category" href="/wishmap/category/{{ category.id }}">{{ category.name }}</a>
+                        <a class="btn btn-danger" href="/wishmap/category/{{ category.id }}">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -67,7 +69,7 @@
                             </div>
                         </div>
                         <a class="btn btn-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
-                        <a class="btn btn-danger margin" id="delete-wishmap" data-id="{{wishmap.id}}" >Delete</a>
+                        <a class="btn btn-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">Delete</a>
                     </div>
                 </div>
             {% endfor %}
