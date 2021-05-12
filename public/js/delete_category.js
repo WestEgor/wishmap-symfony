@@ -7,6 +7,7 @@ $(document).ready(function () {
                 type: 'delete',
                 success: function () {
                     location.reload();
+                    alert('Deleted successfully')
                 },
                 error: function () {
                     alert('Cannot delete! Probably, this category is used in your wish map card.')
