@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\PersonRepository;
 use App\Repository\WishMapRepository;
 use App\Security\PersonAuthorization;
+use App\Service\ImageUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -33,7 +34,7 @@ class WishMapController extends AbstractController
 
 
     #[Route('/wishmap/create', name: 'create_wish_map')]
-    public function wishMapCreate(Request $request, PersonRepository $personRepository, SluggerInterface $slugger)
+    public function wishMapCreate(Request $request, PersonRepository $personRepository, ImageUploader $imageUploader)
     {
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
@@ -44,23 +45,13 @@ class WishMapController extends AbstractController
             $wishMap = $form->getData();
             $wishMapImage = $form->get('image')->getData();
             if ($wishMapImage) {
-                $originalFilename = pathinfo($wishMapImage->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $wishMapImage->guessExtension();
-                try {
-                    $wishMapImage->move(
-                        $this->getParameter('wishmaps_images_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    throw new FileException($e);
-                }
-                $wishMap->setImage($newFilename);
-                $wishMap->setPerson($person);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($wishMap);
-                $entityManager->flush();
+                $imageName = $imageUploader->upload($wishMapImage);
+                $wishMap->setImage($imageName);
             }
+            $wishMap->setPerson($person);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($wishMap);
+            $entityManager->flush();
             return $this->redirectToRoute('wish_map');
         }
         return $this->render('wish_map/new_wish_map.html.twig', [
@@ -77,9 +68,7 @@ class WishMapController extends AbstractController
 
         $categories = $categoryRepository->findOneBySomeField($person);
 
-
         $wishMaps = $wishMapRepository->findByPerson($person);
-
 
         $pagination = $paginator->paginate(
             $wishMaps,

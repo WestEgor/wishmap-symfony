@@ -23,27 +23,27 @@
                     <div class="card">
                         <div class="card-body">
                             <img class="card-img-top" style="max-width: 100%; height: auto"
-                                 src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
+                                 src="{{ asset('uploads/wish_map_images/' ~ wm.image) }}"
                                  alt="Card image cap">
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
-                                     style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
-                                     aria-valuemin="0" aria-valuemax="100">{{ wishmap.process }}%
+                                     style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wm.process }}"
+                                     aria-valuemin="0" aria-valuemax="100">{{ wm.process }}%
                                 </div>
                             </div>
-                            <p class="card-text description">{{ wishmap.description }}</p>
+                            <p class="card-text description">{{ wm.description }}</p>
                             <div class="row">
                                 <label>Start date:</label>
-                                {% if (wishmap.startDate is null) %}
+                                {% if (wm.startDate is null) %}
                                     <p class="card-text"
                                        style="margin-left:10px "> --- </p>
                                 {% else %}
                                     <p class="card-text"
-                                       style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
+                                       style="margin-left:10px ">{{ wm.startDate|date('d-m-Y')|e }}</p>
                                 {% endif %}
                                 <label style="margin-left:10px ">Finish date:</label>
                                 <p class="card-text"
-                                   style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                                   style="margin-left:10px ">{{ wm.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,11 @@
     {% endif %}
 
 
+
+{#
     <div class="someclass">{{ knp_pagination_render(wishmaps) }}</div>
+#}
+
 
     <script src="js/person_search.js"></script>
 {% endblock %}

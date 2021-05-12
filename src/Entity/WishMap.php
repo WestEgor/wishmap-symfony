@@ -38,7 +38,7 @@ class WishMap
     /**
      * @ORM\Column(type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"}))
      */
-    private DateTime $startDate;
+    private ?DateTime $startDate;
 
     /**
      * @ORM\Column(type="datetime")
@@ -63,7 +63,7 @@ class WishMap
      *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id", unique=true)}
      *      )
      */
-    private  $comments;
+    private $comments;
 
 
     public function getId(): ?int
@@ -116,7 +116,7 @@ class WishMap
         return $this;
     }
 
-    public function getStartDate(): ?DateTime
+    public function getStartDate(): DateTime|null
     {
         return $this->startDate;
     }
@@ -183,12 +183,10 @@ class WishMap
     /**
      * @param Comments $comments
      */
-    public function setComments( $comments): void
+    public function setComments($comments): void
     {
         $this->comments = $comments;
     }
-
-
 
 
 }
