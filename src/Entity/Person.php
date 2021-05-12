@@ -99,6 +99,4 @@ class Person
         $this->user = $user;
     }
 
-
-
 }

@@ -62,7 +62,7 @@ class Comments
     }
 
     /**
-     * @return int
+     * @return Person
      */
     public function getSendPerson(): Person
     {

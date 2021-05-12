@@ -28,7 +28,7 @@ class WishMap
      * @ORM\ManyToOne (targetEntity="Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
      */
-    private Category $category;
+    private ?Category $category;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -48,7 +48,7 @@ class WishMap
     /**
      * @ORM\Column(type="float", nullable=true, options={"default" : 0})
      */
-    private float $process;
+    private ?float $process;
 
     /**
      * @ORM\ManyToOne(targetEntity="Person")
@@ -63,7 +63,7 @@ class WishMap
      *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id", unique=true)}
      *      )
      */
-    private $comments;
+    private ?Comments $comments;
 
 
     public function getId(): ?int
@@ -71,44 +71,53 @@ class WishMap
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImage(): string
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
     /**
      * @param string $image
+     * @return $this
      */
-    public function setImage(string $image): void
+    public function setImage(string $image): self
     {
         $this->image = $image;
+        return $this;
     }
 
+
     /**
-     * @return string
+     * @return Category|null
      */
-    public function getCategory()
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
     /**
-     * @param  $category
+     * @param $category
+     * @return $this
      */
-    public function setCategory($category): void
+    public function setCategory($category): self
     {
         $this->category = $category;
+        return $this;
     }
 
 
+    /**
+     * @param string $description
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -116,11 +125,18 @@ class WishMap
         return $this;
     }
 
-    public function getStartDate(): DateTime|null
+    /**
+     * @return DateTime|null
+     */
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
 
+    /**
+     * @param DateTime $startDate
+     * @return $this
+     */
     public function setStartDate(DateTime $startDate): self
     {
         $this->startDate = $startDate;
@@ -128,11 +144,18 @@ class WishMap
         return $this;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getFinishDate(): DateTime
     {
         return $this->finishDate;
     }
 
+    /**
+     * @param DateTime $finishDate
+     * @return $this
+     */
     public function setFinishDate(DateTime $finishDate): self
     {
         $this->finishDate = $finishDate;
@@ -141,19 +164,21 @@ class WishMap
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getProcess(): float
+    public function getProcess(): ?float
     {
         return $this->process;
     }
 
     /**
      * @param float $process
+     * @return $this
      */
-    public function setProcess(float $process): void
+    public function setProcess(float $process): self
     {
         $this->process = $process;
+        return $this;
     }
 
     /**
@@ -164,28 +189,29 @@ class WishMap
         return $this->person;
     }
 
-    /**
-     * @param Person $person
-     */
-    public function setPerson(Person $person): void
+    public function setPerson(Person $person): self
     {
         $this->person = $person;
+
+        return $this;
     }
 
     /**
-     * @return Comments
+     * @return Comments|null
      */
-    public function getComments()
+    public function getComments(): ?Comments
     {
         return $this->comments;
     }
 
     /**
      * @param Comments $comments
+     * @return $this
      */
-    public function setComments($comments): void
+    public function setComments(Comments $comments): self
     {
         $this->comments = $comments;
+        return $this;
     }
 
 
