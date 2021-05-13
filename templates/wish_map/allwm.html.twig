@@ -5,19 +5,14 @@
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
-    <script src="{{ asset('js/delete_wm.js') }}"></script>
-    <script src="{{ asset('js/delete_category.js') }}"></script>
 
-    {% if person %}
-        <div class="column left">
-            <p>{{ person.nickname }}</p>
-            {% if person.avatar is not null %}
-                <img class="card-img-top" style="max-width: 200px; height: 200px"
-                     src="{{ asset('uploads/wish_map_images/' ~ person.avatar) }}"
-                     alt="Card image cap">
-            {% endif %}
-            <p>{{ person.profileDescription }}</p>
-        </div>
+
+    {% if categories %}
+        {% for category in categories %}
+            <div class="column left">
+                <p>{{ category.name }}</p>
+            </div>
+        {% endfor %}
     {% endif %}
     {% if wishmaps %}
         <div class="row column right" id="card">
@@ -30,8 +25,11 @@
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            <p class="card-text category">{{ wishmap.category_id }}</p>
-
+                            {% for category in categories %}
+                                {% if category.id == wishmap.id %}
+                                    <p class="card-text category">{{ category.name }}</p>
+                                {% endif %}
+                            {% endfor %}
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
@@ -51,8 +49,6 @@
                                    style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <a class="btn btn-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
-                        <a class="btn btn-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">Delete</a>
                     </div>
                 </div>
             {% endfor %}

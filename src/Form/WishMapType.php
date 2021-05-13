@@ -2,7 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
+use App\Entity\Person;
 use App\Entity\WishMap;
+use App\Repository\CategoryRepository;
+use App\Repository\PersonRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,6 +20,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 class WishMapType extends AbstractType
 {
+
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -34,8 +40,11 @@ class WishMapType extends AbstractType
                     ])
                 ],
             ])
-            ->add('category', TextType::class,
-                ['label' => 'Category', 'required' => false,
+            ->add('category', EntityType::class,
+                ['class' => Category::class,
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                    'label' => 'Category', 'required' => false,
                     'attr' => ['class' => 'card-title']])
             ->add('description', TextType::class,
                 ['label' => 'Description',
@@ -58,7 +67,7 @@ class WishMapType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => WishMap::class,
+            'data_class' => WishMap::class
         ]);
     }
 

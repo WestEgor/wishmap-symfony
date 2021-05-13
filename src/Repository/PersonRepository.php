@@ -21,14 +21,4 @@ class PersonRepository extends ServiceEntityRepository
         parent::__construct($registry, Person::class);
     }
 
-
-   /* public function findOneBySomeField(int $userId): ?Person
-    {
-        return $this->createQueryBuilder('persons')
-            ->andWhere('persons.user = :users_id')
-            ->setParameter('users_id', $userId)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }*/
 }

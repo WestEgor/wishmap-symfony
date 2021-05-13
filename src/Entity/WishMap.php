@@ -22,7 +22,7 @@ class WishMap
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private string $image;
+    private ?string $image = null;
 
     /**
      * @ORM\ManyToOne (targetEntity="Category")
@@ -64,7 +64,7 @@ class WishMap
      *      unique=true)}
      *      )
      */
-    private  $comments;
+    private $comments;
 
 
     public function getId(): ?int
@@ -94,7 +94,6 @@ class WishMap
         $this->image = $image;
         return $this;
     }
-
 
 
     public function getCategory()
@@ -212,6 +211,7 @@ class WishMap
         $this->comments = $comments;
         return $this;
     }
+
 
 
 }

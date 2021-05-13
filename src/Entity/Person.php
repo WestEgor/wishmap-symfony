@@ -21,12 +21,19 @@ class Person
     /**
      * @ORM\Column(type="string", length=50, unique=false, nullable=false)
      */
-    private string $name;
+    private string $nickname;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $avatar = null;
+
 
     /**
      * @ORM\Column(type="string", length=50, unique=false, nullable=false)
      */
-    private string $surname;
+    private string $profileDescription;
 
 
     /**
@@ -54,37 +61,53 @@ class Person
     /**
      * @return string
      */
-    public function getName(): string
+    public function getNickname(): string
     {
-        return $this->name;
+        return $this->nickname;
     }
 
     /**
-     * @param string $name
+     * @param string $nickname
      */
-    public function setName(string $name): void
+    public function setNickname(string $nickname): void
     {
-        $this->name = $name;
+        $this->nickname = $nickname;
     }
 
     /**
      * @return string
      */
-    public function getSurname(): string
+    public function getAvatar(): ?string
     {
-        return $this->surname;
+        return $this->avatar;
     }
 
     /**
-     * @param string $surname
+     * @param string $avatar
      */
-    public function setSurname(string $surname): void
+    public function setAvatar(string $avatar): void
     {
-        $this->surname = $surname;
+        $this->avatar = $avatar;
     }
 
     /**
-     * @return int
+     * @return string
+     */
+    public function getProfileDescription(): string
+    {
+        return $this->profileDescription;
+    }
+
+    /**
+     * @param string $profileDescription
+     */
+    public function setProfileDescription(string $profileDescription): void
+    {
+        $this->profileDescription = $profileDescription;
+    }
+
+    /**
+     * @return User
      */
     public function getUser(): User
     {
@@ -98,5 +121,7 @@ class Person
     {
         $this->user = $user;
     }
+
+
 
 }

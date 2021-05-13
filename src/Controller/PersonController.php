@@ -8,6 +8,7 @@ use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
 use App\Security\PersonAuthorization;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +54,7 @@ class PersonController extends AbstractController
     }
 
     #[Route('/profile/update', name: 'profile_update')]
-    public function profileUpdate(Request $request, PersonRepository $personRepository): Response
+    public function profileUpdate(ImageUploader $imageUploader, Request $request, PersonRepository $personRepository): Response
     {
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
@@ -62,6 +63,12 @@ class PersonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $personAvatar = $form->get('avatar')->getData();
+
+            if ($personAvatar) {
+                $imageName = $imageUploader->upload($personAvatar);
+                $person->setAvatar($imageName);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
             return $this->redirectToRoute('wish_map');
@@ -83,7 +90,6 @@ class PersonController extends AbstractController
         }
         return $this->redirectToRoute('wish_map');
     }
-
 
 
 }

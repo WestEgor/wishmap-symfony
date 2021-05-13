@@ -11,12 +11,10 @@ use App\Security\PersonAuthorization;
 use App\Service\ImageUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class WishMapController extends AbstractController
 {
@@ -39,7 +37,9 @@ class WishMapController extends AbstractController
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
         $wishMap = new WishMap();
+
         $form = $this->createForm(WishMapType::class, $wishMap);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $wishMap = $form->getData();
@@ -61,12 +61,10 @@ class WishMapController extends AbstractController
 
     #[Route('/wishmap', name: 'wish_map', methods: ['get', 'post'])]
     public function index(WishMapRepository $wishMapRepository, PersonRepository $personRepository,
-                          PaginatorInterface $paginator, CategoryRepository $categoryRepository, Request $request): Response
+                          PaginatorInterface $paginator, Request $request): Response
     {
         $personAuth = new PersonAuthorization($this->security);
         $person = $personAuth->getLoggedPerson($personRepository);
-
-        $categories = $categoryRepository->findAllCategoriesByPerson($person);
 
         $wishMaps = $wishMapRepository->findByPerson($person);
 
@@ -79,19 +77,37 @@ class WishMapController extends AbstractController
 
         return $this->render('wish_map/index.html.twig', [
             'wishmaps' => $pagination,
+            'person' => $person
+        ]);
+    }
+
+    #[ROUTE('/wishmap/all', name: 'wishmap_all')]
+    public function showAllWishMapcards(WishMapRepository $wishMapRepository, CategoryRepository $categoryRepository,
+                                        Request $request, PaginatorInterface $paginator)
+    {
+        $wishMaps = $wishMapRepository->findAll();
+        $categories = $categoryRepository->findAll();
+
+        $pagination = $paginator->paginate(
+            $wishMaps,
+            $request->query->getInt('page', 1),
+            4
+        );
+
+
+        return $this->render('wish_map/allwm.html.twig', [
+            'wishmaps' => $pagination,
             'categories' => $categories
         ]);
     }
 
     #[Route('/wishmap/category/{id}', name: 'wish_map_category', methods: ['get', 'post'])]
-    public function selectCat(WishMapRepository $wishMapRepository, PersonRepository $personRepository,
+    public function selectCat(WishMapRepository $wishMapRepository,
                               PaginatorInterface $paginator, CategoryRepository $categoryRepository,
                               Request $request, $id): Response
     {
-        $personAuth = new PersonAuthorization($this->security);
-        $person = $personAuth->getLoggedPerson($personRepository);
 
-        $categories = $categoryRepository->findAllCategoriesByPerson($person);
+        $categories = $categoryRepository->findAll();
         $category = $categoryRepository->findOneCategoryByCategoryId($id);
         $wishMaps = $wishMapRepository->findByCategory($category);
 
@@ -108,6 +124,31 @@ class WishMapController extends AbstractController
         ]);
     }
 
+    #[Route('/wishmap/update/{id}', name: 'update_wishmap')]
+    public function wishMapUpdate(ImageUploader $imageUploader,
+                                  WishMapRepository $wishMapRepository, $id, Request $request)
+    {
+        $wishMap = $wishMapRepository->find($id);
+        $form = $this->createForm(WishMapType::class, $wishMap);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $wishMapImage = $form->get('image')->getData();
+
+            if ($wishMapImage) {
+                $imageName = $imageUploader->upload($wishMapImage);
+                $wishMap->setImage($imageName);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->flush();
+            return $this->redirectToRoute('wish_map');
+        }
+        return $this->render('wish_map/new_wish_map.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[ROUTE('/wishmap/delete/{id}', name: 'wishmap_delete', methods: ['delete', 'get'])]
     public function deleteWishMap(int $id, WishMapRepository $wishMapRepository)
     {
@@ -118,5 +159,7 @@ class WishMapController extends AbstractController
         $response = new Response();
         return $response->send();
     }
+
+
 
 }
