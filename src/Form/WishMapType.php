@@ -3,15 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\Person;
 use App\Entity\WishMap;
-use App\Repository\CategoryRepository;
-use App\Repository\PersonRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,6 +26,7 @@ class WishMapType extends AbstractType
                 'label' => 'Image (JPEG)',
                 'mapped' => false,
                 'required' => false,
+                'attr' => ['class' => 'form-label mt-4'],
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -45,19 +43,21 @@ class WishMapType extends AbstractType
                     'choice_label' => 'name',
                     'multiple' => false,
                     'label' => 'Category', 'required' => false,
-                    'attr' => ['class' => 'card-title']])
+                    'attr' => ['class' => 'form-control form-control-sm text-primary description']])
             ->add('description', TextType::class,
                 ['label' => 'Description',
-                    'attr' => ['class' => 'card-text']])
-            ->add('startDate', DateType::class,
-                ['label' => 'Start date',
-                    'attr' => ['class' => 'card-text']])
+
+                    'attr' => ['class' => 'form-control']])
             ->add('finishDate', DateType::class,
-                ['label' => 'Finish Date',
-                    'attr' => ['class' => 'card-text']])
-            ->add('process', NumberType::class,
+                ['label' => 'Finish Date', 'widget' => 'single_text', 'html5' => false,
+                    'attr' => ['class' => 'js-datepicker']])
+            ->add('process', RangeType::class,
                 ['label' => 'Process of doing', 'required' => false,
-                    'attr' => ['class' => 'card-text', 'min' => 0, 'max' => 100]])
+                    'attr' => [
+                        'class' => 'form-range',
+                        'min' => 0, 'max' => 100,
+                        'onchange' => 'updateTextInput(this.value);'
+                    ]])
             ->add('save', SubmitType::class, [
                 'label' => 'Create',
                 'attr' => ['class' => 'btn btn-primary mt-3']
@@ -70,5 +70,6 @@ class WishMapType extends AbstractType
             'data_class' => WishMap::class
         ]);
     }
-
+    /*
+     * */
 }

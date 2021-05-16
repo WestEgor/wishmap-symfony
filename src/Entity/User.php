@@ -25,11 +25,6 @@ class User implements UserInterface
     private string $username;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
-    private string $email;
-
-    /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
@@ -40,16 +35,26 @@ class User implements UserInterface
      */
     private string $password;
 
+    /**
+     * @ORM\Column(type="string", length=50, unique=false, nullable=false)
+     */
+    private string $nickname;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $avatar = null;
+
+
+    /**
+     * @ORM\Column(type="string", length=50, unique=false, nullable=false)
+     */
+    private string $profileDescription;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id)
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
@@ -66,23 +71,6 @@ class User implements UserInterface
     {
         $this->username = $username;
 
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
         return $this;
     }
 
@@ -120,6 +108,56 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getNickname(): string
+    {
+        return $this->nickname;
+    }
+
+    /**
+     * @param string $nickname
+     */
+    public function setNickname(string $nickname): void
+    {
+        $this->nickname = $nickname;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param string|null $avatar
+     */
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfileDescription(): string
+    {
+        return $this->profileDescription;
+    }
+
+    /**
+     * @param string $profileDescription
+     */
+    public function setProfileDescription(string $profileDescription): void
+    {
+        $this->profileDescription = $profileDescription;
+    }
+
+
 
     /**
      * Returning a salt is only needed, if you are not using a modern

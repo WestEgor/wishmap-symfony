@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,14 +20,14 @@ class RegistrationController extends AbstractController
      * RegistrationController constructor.
      * @param $passwordEncoder
      */
-    public function __construct(UserPasswordEncoderInterface  $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
 
 
     #[Route('/registration', name: 'registration')]
-    public function index(Request $request): Response
+    public function index(Request $request, ImageUploader $imageUploader): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -35,8 +36,13 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             $user->setRoles(["ROLE_USER"]);
-
             $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
+            $userAvatar = $form->get('avatar')->getData();
+            if ($userAvatar) {
+                $imageName = $imageUploader->upload($userAvatar);
+                $user->setAvatar($imageName);
+            }
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

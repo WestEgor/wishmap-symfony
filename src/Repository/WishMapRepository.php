@@ -22,15 +22,6 @@ class WishMapRepository extends ServiceEntityRepository
         parent::__construct($registry, WishMap::class);
     }
 
-    public function findByPerson(Person $person): QueryBuilder
-    {
-        return $this->createQueryBuilder('wm')
-            ->select('wm.id, wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
-            identity(wm.category) AS category_id')
-            ->andWhere('wm.person = :person')
-            ->setParameter('person', $person)
-            ->orderBy('wm.finishDate');
-    }
 
     public function findByCategory(array $category): QueryBuilder
     {
@@ -40,6 +31,16 @@ class WishMapRepository extends ServiceEntityRepository
             ->andWhere('wm.category = :category')
             ->setParameter('category', $category)
             ->orderBy('wm.finishDate');
+    }
+
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('wm')
+            ->andWhere('wm.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('wm.finishDate')
+            ->getQuery()
+            ->getResult();
     }
 
 }

@@ -24,10 +24,10 @@ class Comments
     private string $comment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="send_persons_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="send_user_id", referencedColumnName="id", nullable=false)
      */
-    private Person $sendPerson;
+    private User $sendUser;
 
     /**
      * @return int

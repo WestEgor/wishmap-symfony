@@ -8,15 +8,21 @@
     <script src="{{ asset('js/delete_wm.js') }}"></script>
     <script src="{{ asset('js/delete_category.js') }}"></script>
 
-    {% if person %}
+    {% if user %}
         <div class="column left">
-            <p>{{ person.nickname }}</p>
-            {% if person.avatar is not null %}
+            <p>{{ user.nickname }}</p>
+            {% if user.avatar is not null %}
                 <img class="card-img-top" style="max-width: 200px; height: 200px"
-                     src="{{ asset('uploads/wish_map_images/' ~ person.avatar) }}"
+                     src="{{ asset('uploads/wish_map_images/' ~ user.avatar) }}"
                      alt="Card image cap">
             {% endif %}
-            <p>{{ person.profileDescription }}</p>
+            <p>{{ user.profileDescription }}</p>
+            <div>{{ knp_pagination_render(wishmaps) }}</div>
+        </div>
+    {% endif %}
+    {% if error|length != 0 %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
         </div>
     {% endif %}
     {% if wishmaps %}
@@ -30,8 +36,9 @@
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            <p class="card-text category">{{ wishmap.category_id }}</p>
-
+                            {% if wishmap.category is not null %}
+                                <p class="card-text category">{{ wishmap.category.name }}</p>
+                            {% endif %}
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
@@ -62,6 +69,5 @@
         <p>You have no WISHES!</p>
     {% endif %}
 
-    <div class="someclass">{{ knp_pagination_render(wishmaps) }}</div>
 
 {% endblock %}

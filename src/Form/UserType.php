@@ -4,13 +4,15 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserType extends AbstractType
 {
@@ -18,7 +20,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, ['attr' => ['class' => 'form-control']])
-            ->add('email', EmailType::class, ['attr' => ['class' => 'form-control']])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
 
@@ -28,6 +29,23 @@ class UserType extends AbstractType
                 'second_options' => ['label' => 'Confirm password',
                     'attr' => ['class' => 'form-control']]
             ])
+            ->add('nickname', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('avatar', FileType::class, [
+                'label' => 'Image (JPEG)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid Image (png/jpeg)',
+                    ])
+                ],
+            ])
+            ->add('profileDescription', TextareaType::class, ['attr' => ['class' => 'form-control']])
             ->add('save', SubmitType::class, [
                 'label' => 'Create',
                 'attr' => ['class' => 'btn btn-primary mt-3']

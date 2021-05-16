@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTime;
 use App\Repository\WishMapRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,10 +52,10 @@ class WishMap
     private ?float $process;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="persons_id", referencedColumnName="id", nullable=false)
      */
-    private Person $person;
+    private User $user;
 
     /**
      * @ORM\ManyToMany(targetEntity="Comments", cascade={"persist","remove"}, orphanRemoval=true)
@@ -65,6 +66,13 @@ class WishMap
      *      )
      */
     private $comments;
+
+
+    public function __construct()
+    {
+        $this->startDate = new DateTime('now');
+        $this->process = 0;
+    }
 
 
     public function getId(): ?int
@@ -132,12 +140,11 @@ class WishMap
     }
 
     /**
-     * @param DateTime $startDate
      * @return $this
      */
-    public function setStartDate(DateTime $startDate): self
+    public function setStartDate(): self
     {
-        $this->startDate = $startDate;
+        $this->startDate = new DateTime('now');
 
         return $this;
     }
@@ -179,39 +186,40 @@ class WishMap
         return $this;
     }
 
-    /**
-     * @return Person
-     */
-    public function getPerson(): Person
-    {
-        return $this->person;
-    }
-
-    public function setPerson(Person $person): self
-    {
-        $this->person = $person;
-
-        return $this;
-    }
 
     /**
-     * @return Comments|null
+     * @return ArrayCollection|null
      */
-    public function getComments(): ?Comments
+    public function getComments()
     {
         return $this->comments;
     }
 
     /**
-     * @param Comments $comments
+     * @param  $comments
      * @return $this
      */
-    public function setComments(Comments $comments): self
+    public function setComments($comments): self
     {
         $this->comments = $comments;
         return $this;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
 
 
 }
