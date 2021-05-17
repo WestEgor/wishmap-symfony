@@ -125,7 +125,6 @@ class WishMapController extends AbstractController
         $wm = $wishMapRepository->wishMapsLeftJoin();
 
 
-
         $pagination = $paginator->paginate(
             $wishMaps,
             $request->query->getInt('page', 1),
@@ -136,6 +135,22 @@ class WishMapController extends AbstractController
             'wishmaps' => $pagination,
             'wmCategoryCounter' => $wm
         ]);
+    }
+
+    #[ROUTE('/wishmap/take-a-card/{id}', name: 'wishmap_take_card')]
+    public function takeWishMapCard(int $id, WishMapRepository $wishMapRepository, UserActionValidation $validation)
+    {
+        if ($validation->checkUserWishMapCard($wishMapRepository, $id)) {
+            static::$error = 'YOU ARE CANNOT TAKE YOUR OWN CARD!';
+            return $this->forward('App\Controller\WishMapController::index', [
+                'error' => static::$error
+            ]);
+        }
+        $wishMap = $wishMapRepository->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($wishMap);
+        $entityManager->flush();
+        return $this->redirectToRoute('wish_map');
     }
 
     /*#[Route('/wishmap/category/{id}', name: 'wish_map_category', methods: ['get', 'post'])]
