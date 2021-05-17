@@ -13,7 +13,9 @@ class UserFixtures extends Fixture
 {
 
     private UserPasswordEncoderInterface $passwordEncoder;
-    public const REFERENCES = array('first', 'second', 'third', 'four', 'five', 's', 'seven', 'eight', 'nine', 'ten');
+
+    public const USER_REFERENCES = array('first_u', 'second_u', 'third_u', 'four_u',
+        'five_u', 'six_u', 'seven_u', 'eight_u', 'nine_u', 'ten_u');
 
     /**
      * RegistrationController constructor.
@@ -26,14 +28,17 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i < count(self::REFERENCES); $i++) {
+        $file = '12131e23-7687-44ae-b71a-7e96e8da5e83-609d63d5a4201-609d720edf602.jpg';
+        for ($i = 0; $i < count(self::USER_REFERENCES); $i++) {
             $user = new User();
             $user->setUsername('username' . $i);
-            $user->setEmail('email' . $i . '@email.com');
-            $user->setRoles(['ROLE_USER']);
             $user->setPassword($this->passwordEncoder->encodePassword($user, 'password' . $i));
+            $user->setNickname('nickname' . $i);
+            $user->setRoles(['ROLE_USER']);
+            $user->setAvatar($file);
+            $user->setProfileDescription('Some description:' . $i);
             $manager->persist($user);
-            $this->addReference(self::REFERENCES[$i], $user);
+            $this->addReference(self::USER_REFERENCES[$i], $user);
         }
         $manager->flush();
 

@@ -1,43 +1,55 @@
 <?php
 
-
 namespace App\DataFixtures;
 
-
-use App\Entity\Category;
-use App\Entity\Comments;
-use App\Entity\Person;
 use App\Entity\WishMap;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class WishMapFixtures extends Fixture
+class WishMapFixtures extends Fixture implements DependentFixtureInterface
 {
 
-    public function load(ObjectManager $manager)
+    public function getDependencies(): array
     {
-        $personRep = $manager->getRepository(Person::class);
-        $categoryRep = $manager->getRepository(Category::class);
-        $commentsRep = $manager->getRepository(Comments::class);
-
-        for ($i = 0; $i < 50; $i++) {
-            $person = $personRep->findOneBy(['name' => 'name' . mt_rand(0, 9)]);
-            $category = $categoryRep->findOneBy(['person' => $person]);
-            $comments = $commentsRep->findOneBy(['comment' => 'comment' . mt_rand(0, 29)]);
-            $wishMap = new WishMap();
-            $wishMap->setPerson($person);
-            $wishMap->setCategory($category);
-            $wishMap->setComments($comments);
-            $wishMap->setDescription('Some descr' . $i);
-            $wishMap->setProcess(mt_rand(0, 100));
-            $wishMap->setFinishDate(new \DateTime());
-            $manager->persist($wishMap);
-        }
-
-        $manager->flush();
-
-
+        return [
+            UserFixtures::class,
+            CategoryFixtures::class,
+            CommentFixtures::class
+        ];
     }
 
 
+    public function load(ObjectManager $manager)
+    {
+
+        $userSize = count(UserFixtures::USER_REFERENCES) - 1;
+        $categorySize = count(CategoryFixtures::CATEGORY_REFERENCES) - 1;
+        $image = 'Square-200x200-6096ab3616005-60a24e83c4ec2.png';
+        for ($i = 0; $i < 50; $i++) {
+            $userId = mt_rand(0, $userSize);
+            $categoryId = mt_rand(0, $categorySize);
+            $wishMap = new WishMap();
+
+            if ($i < 19) {
+                $comment = $this->getReference(CommentFixtures::COMMENTS_REFERENCES[$i]);
+                $wishMap->setComments([$comment]);
+            }
+
+
+            $user = $this->getReference(UserFixtures::USER_REFERENCES[$userId]);
+            $category = $this->getReference(CategoryFixtures::CATEGORY_REFERENCES[$categoryId]);
+
+
+            $wishMap->setUser($user);
+            $wishMap->setName('name:' . $i);
+            $wishMap->setImage($image);
+            $wishMap->setCategory($category);
+            $wishMap->setDescription('Some descr' . $i);
+            $wishMap->setProgress(mt_rand(0, 100));
+            $wishMap->setFinishDate(new \DateTime());
+            $manager->persist($wishMap);
+        }
+        $manager->flush();
+    }
 }

@@ -62,20 +62,21 @@ class Comments
     }
 
     /**
-     * @return Person
+     * @return User
      */
-    public function getSendPerson(): Person
+    public function getSendUser(): User
     {
-        return $this->sendPerson;
+        return $this->sendUser;
     }
 
     /**
-     * @param  $sendPerson
+     * @param User $sendUser
      */
-    public function setSendPerson($sendPerson): void
+    public function setSendUser(User $sendUser): void
     {
-        $this->sendPerson = $sendPerson;
+        $this->sendUser = $sendUser;
     }
+
 
 
 }
