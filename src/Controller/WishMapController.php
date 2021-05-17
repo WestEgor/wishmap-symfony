@@ -8,12 +8,15 @@ use App\Repository\CategoryRepository;
 use App\Repository\WishMapRepository;
 use App\Service\ImageUploader;
 use App\Service\UserActionValidation;
+use DateTimeImmutable;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
+use Symfony\Component\Validator\Constraints\Date;
 
 class WishMapController extends AbstractController
 {
@@ -109,6 +112,7 @@ class WishMapController extends AbstractController
             ]);
         }
         $wishMap = $wishMapRepository->find($id);
+        $wishMap->setComments([]);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($wishMap);
         $entityManager->flush();
@@ -146,7 +150,15 @@ class WishMapController extends AbstractController
                 'error' => static::$error
             ]);
         }
-        $wishMap = $wishMapRepository->find($id);
+        $wishMap = clone $wishMapRepository->find($id);
+        $oldStartDate = $wishMap->getStartDate();
+        $oldFinishDate = $wishMap->getFinishDate();
+
+        $wishMap->setUser($this->getUser());
+        $wishMap->setProgress(0);
+        $wishMap->setStartDate(new DateTime('now'));
+        $wishMap->setComments([]);
+        $wishMap->setFinishDate($wishMap->countDateDifference($oldStartDate, $oldFinishDate, new DateTime('now')));
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($wishMap);
         $entityManager->flush();
@@ -175,4 +187,6 @@ class WishMapController extends AbstractController
             'categories' => $categories
         ]);
     }*/
+
+
 }

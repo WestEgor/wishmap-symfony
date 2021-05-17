@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use DateTime;
-use App\Repository\WishMapRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass=WishMapRepository::class)
@@ -42,9 +43,9 @@ class WishMap
     private string $description;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"}))
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"}))
      */
-    private ?DateTime $startDate;
+    private DateTime $startDate;
 
     /**
      * @ORM\Column(type="datetime")
@@ -100,7 +101,6 @@ class WishMap
     {
         $this->name = $name;
     }
-
 
 
     public function getDescription(): string
@@ -163,13 +163,11 @@ class WishMap
     }
 
     /**
-     * @return $this
+     * @param DateTime $startDate
      */
-    public function setStartDate(): self
+    public function setStartDate(DateTime $startDate): void
     {
-        $this->startDate = new DateTime('now');
-
-        return $this;
+        $this->startDate = $startDate;
     }
 
     /**
@@ -182,14 +180,12 @@ class WishMap
 
     /**
      * @param DateTime $finishDate
-     * @return $this
      */
-    public function setFinishDate(DateTime $finishDate): self
+    public function setFinishDate(DateTime $finishDate): void
     {
         $this->finishDate = $finishDate;
-
-        return $this;
     }
+
 
     /**
      * @return int|null
@@ -242,5 +238,11 @@ class WishMap
         $this->user = $user;
     }
 
+    public function countDateDifference(DateTime $oldStartDate, DateTime $oldFinishDate,
+                                        DateTime $newStartDate)
+    {
+        $dateInterval = date_diff($oldStartDate, $oldFinishDate);
+        return date_add($newStartDate, $dateInterval);
+    }
 
 }
