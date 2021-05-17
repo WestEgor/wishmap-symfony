@@ -28,9 +28,10 @@
     {% if wishmaps %}
         <div class="row column right" id="card">
             {% for wishmap in wishmaps %}
-                <div class="col-3">
+                <div class="col-sm-3">
                     <div class="card" id="card-body">
                         <div class="card-body">
+                            <p class="card-text category">{{ wishmap.name }}</p>
                             {% if wishmap.image is not null %}
                                 <img class="card-img-top" style="max-width: 100%; height: auto"
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
@@ -41,9 +42,9 @@
                             {% endif %}
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
-                                     style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
+                                     style="width: {{ wishmap.progress }}%;" aria-valuenow="{{ wishmap.progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
-                                    <span>{{ wishmap.process }}%</span>
+                                    <span>{{ wishmap.progress }}%</span>
                                 </div>
                             </div>
                             <p class="card-text description">{{ wishmap.description }}</p>

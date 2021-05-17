@@ -22,6 +22,9 @@ class WishMapType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name', TextType::class,
+                ['label' => 'Description',
+                    'attr' => ['class' => 'form-control']])
             ->add('image', FileType::class, [
                 'label' => 'Image (JPEG)',
                 'mapped' => false,
@@ -51,8 +54,8 @@ class WishMapType extends AbstractType
             ->add('finishDate', DateType::class,
                 ['label' => 'Finish Date', 'widget' => 'single_text', 'html5' => false,
                     'attr' => ['class' => 'js-datepicker']])
-            ->add('process', RangeType::class,
-                ['label' => 'Process of doing', 'required' => false,
+            ->add('progress', RangeType::class,
+                ['label' => 'Progress of doing', 'required' => false,
                     'attr' => [
                         'class' => 'form-range',
                         'min' => 0, 'max' => 100,
@@ -70,6 +73,5 @@ class WishMapType extends AbstractType
             'data_class' => WishMap::class
         ]);
     }
-    /*
-     * */
+
 }

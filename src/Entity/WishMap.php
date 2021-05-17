@@ -21,6 +21,11 @@ class WishMap
     private int $id;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private string $name;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $image = null;
@@ -47,9 +52,9 @@ class WishMap
     private DateTime $finishDate;
 
     /**
-     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
-    private ?float $process;
+    private ?int $progress;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -71,7 +76,7 @@ class WishMap
     public function __construct()
     {
         $this->startDate = new DateTime('now');
-        $this->process = 0;
+        $this->progress = 0;
     }
 
 
@@ -79,6 +84,24 @@ class WishMap
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+
 
     public function getDescription(): string
     {
@@ -169,21 +192,19 @@ class WishMap
     }
 
     /**
-     * @return float|null
+     * @return int|null
      */
-    public function getProcess(): ?float
+    public function getProgress(): ?int
     {
-        return $this->process;
+        return $this->progress;
     }
 
     /**
-     * @param float $process
-     * @return $this
+     * @param int|null $progress
      */
-    public function setProcess(float $process): self
+    public function setProgress(?int $progress): void
     {
-        $this->process = $process;
-        return $this;
+        $this->progress = $progress;
     }
 
 
