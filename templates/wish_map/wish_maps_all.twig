@@ -1,42 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello WM!{% endblock %}
+{% block title %}All wish maps{% endblock %}
 
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
 
+    <div class="column left">
+        {% if wmCategoryCounter %}
+            <div class="category">Categories:</div>
+            {% for wmcateg in wmCategoryCounter %}
+                <p class="category">{{ wmcateg.name }}
+                    <span style=" display: inline-block; width: 35px; height: 25px; border: 1px solid #FFFFFF;text-align: center;">
+                        {{ wmcateg.count }}</span></p>
+            {% endfor %}
 
-    {% if categories %}
-        {% for category in categories %}
-            <div class="column left">
-                <p>{{ category.name }}</p>
-            </div>
-        {% endfor %}
-    {% endif %}
+        {% endif %}
+        <div>{{ knp_pagination_render(wishmaps) }}</div>
+    </div>
+
     {% if wishmaps %}
         <div class="row column right" id="card">
             {% for wishmap in wishmaps %}
-                <div class="col-3">
+                <div class="col-sm-3">
                     <div class="card" id="card-body">
                         <div class="card-body">
+                            <p class="card-text category">{{ wishmap.name }}</p>
                             {% if wishmap.image is not null %}
                                 <img class="card-img-top" style="max-width: 100%; height: auto"
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            {% for category in categories %}
-                                {% if category.id == wishmap.id %}
-                                    <p class="card-text category">{{ category.name }}</p>
-                                {% endif %}
-                            {% endfor %}
+
                             <div class="progress">
                                 <div id="progress-bar" role="progressbar"
-                                     style="width: {{ wishmap.process }}%;" aria-valuenow="{{ wishmap.process }}"
+                                     style="width: {{ wishmap.progress }}%;" aria-valuenow="{{ wishmap.progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
-                                    <span>{{ wishmap.process }}%</span>
+                                    <span>{{ wishmap.progress }}%</span>
                                 </div>
                             </div>
+
+                            {% if wishmap.category is not null %}
+                                <p class="btn btn-primary" style="margin-top: 5px; width: 100%; height: auto">
+                                    {{ wishmap.category.name }}</p>
+                            {% endif %}
+
                             <p class="card-text description">{{ wishmap.description }}</p>
                             <div class="row">
                                 {% if (wishmap.startDate) %}
@@ -49,15 +57,15 @@
                                    style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
+                        <a class="btn btn-outline-warning">Take a card</a>
                     </div>
                 </div>
             {% endfor %}
         </div>
 
     {% else %}
-        <p>You have no WISHES!</p>
+        <p>NO WISHES TO DISPLAY!</p>
     {% endif %}
 
-    <div class="someclass">{{ knp_pagination_render(wishmaps) }}</div>
 
 {% endblock %}

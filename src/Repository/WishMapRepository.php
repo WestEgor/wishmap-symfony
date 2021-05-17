@@ -2,10 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
-use App\Entity\Person;
 use App\Entity\WishMap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,6 +40,17 @@ class WishMapRepository extends ServiceEntityRepository
             ->orderBy('wm.finishDate')
             ->getQuery()
             ->getResult();
+    }
+
+    public function wishMapsLeftJoin()
+    {
+        return $this->createQueryBuilder('wm')
+            ->leftJoin('wm.category', 'cat')
+            ->select('cat.name, COUNT(wm.category) AS count')
+            ->andWhere('cat.id = wm.category')
+            ->groupBy('wm.category')
+            ->getQuery()
+            ->getScalarResult();
     }
 
 }

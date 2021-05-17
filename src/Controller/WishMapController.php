@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\WishMap;
 use App\Form\WishMapType;
+use App\Repository\CategoryRepository;
 use App\Repository\WishMapRepository;
 use App\Service\ImageUploader;
 use App\Service\UserActionValidation;
@@ -116,24 +117,26 @@ class WishMapController extends AbstractController
     }
 
 
-    /*#[ROUTE('/wishmap/all', name: 'wishmap_all')]
-     public function showAllWishMapcards(WishMapRepository $wishMapRepository, CategoryRepository $categoryRepository,
-                                         Request $request, PaginatorInterface $paginator)
-     {
-         $wishMaps = $wishMapRepository->findAll();
-         $categories = $categoryRepository->findAll();
+    #[ROUTE('/wishmap/all', name: 'wishmap_all')]
+    public function showAllWishMapcards(WishMapRepository $wishMapRepository, CategoryRepository $categoryRepository,
+                                        Request $request, PaginatorInterface $paginator)
+    {
+        $wishMaps = $wishMapRepository->findAll();
+        $wm = $wishMapRepository->wishMapsLeftJoin();
 
-         $pagination = $paginator->paginate(
-             $wishMaps,
-             $request->query->getInt('page', 1),
-             4
-         );
 
-         return $this->render('wish_map/allwm.html.twig', [
-             'wishmaps' => $pagination,
-             'categories' => $categories
-         ]);
-     }*/
+
+        $pagination = $paginator->paginate(
+            $wishMaps,
+            $request->query->getInt('page', 1),
+            4
+        );
+
+        return $this->render('wish_map/wish_maps_all.twig', [
+            'wishmaps' => $pagination,
+            'wmCategoryCounter' => $wm
+        ]);
+    }
 
     /*#[Route('/wishmap/category/{id}', name: 'wish_map_category', methods: ['get', 'post'])]
     public function selectCat(WishMapRepository $wishMapRepository,

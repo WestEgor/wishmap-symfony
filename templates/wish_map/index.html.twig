@@ -37,16 +37,17 @@
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            {% if wishmap.category is not null %}
-                                <p class="card-text category">{{ wishmap.category.name }}</p>
-                            {% endif %}
-                            <div class="progress">
+                            <div class="progress" style="margin-top: 6px">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.progress }}%;" aria-valuenow="{{ wishmap.progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
                                     <span>{{ wishmap.progress }}%</span>
                                 </div>
                             </div>
+                            {% if wishmap.category is not null %}
+                                <p class="card-text category">{{ wishmap.category.name }}</p>
+                            {% endif %}
+
                             <p class="card-text description">{{ wishmap.description }}</p>
                             <div class="row">
                                 {% if (wishmap.startDate) %}
