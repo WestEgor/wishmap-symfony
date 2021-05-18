@@ -49,6 +49,7 @@ class WishMapRepository extends ServiceEntityRepository
             ->select('cat.name, COUNT(wm.category) AS count')
             ->andWhere('cat.id = wm.category')
             ->andWhere('u.isPrivate!=1')
+            ->andWhere('wm.isArchived != 1')
             ->groupBy('wm.category')
             ->getQuery()
             ->getScalarResult();
@@ -61,6 +62,21 @@ class WishMapRepository extends ServiceEntityRepository
             ->innerJoin('wm.category', 'c')
             ->select('wm', 'c')
             ->andWhere('u.isPrivate != 1')
+            ->andWhere('wm.isArchived != 1')
+            ->getQuery()
+            ->getScalarResult();
+    }
+
+    public function wishMapsGetNotPrivateAccs_withCategoryName(string $categoryName)
+    {
+        return $this->createQueryBuilder('wm')
+            ->innerJoin('wm.user', 'u')
+            ->innerJoin('wm.category', 'c')
+            ->select('wm', 'c')
+            ->andWhere('c.name = :name')
+            ->andWhere('u.isPrivate != 1')
+            ->andWhere('wm.isArchived != 1')
+            ->setParameter('name', $categoryName)
             ->getQuery()
             ->getScalarResult();
     }

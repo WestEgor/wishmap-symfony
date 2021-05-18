@@ -27,7 +27,8 @@ class WishMapController extends AbstractController
                           PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
-        $wishMaps = $wishMapRepository->findByUser($user);
+        $wishMaps = $wishMapRepository->findBy(['user' => $user,
+            'isArchived' => 0]);
 
         $pagination = $paginator->paginate(
             $wishMaps,
@@ -166,14 +167,11 @@ class WishMapController extends AbstractController
 
     #[Route('/wishmap/all/category/{categoryName}', name: 'wish_map_category', methods: ['get', 'post'])]
     public function selectCat(WishMapRepository $wishMapRepository,
-                              PaginatorInterface $paginator, CategoryRepository $categoryRepository,
+                              PaginatorInterface $paginator,
                               Request $request, string $categoryName): Response
     {
 
-
-        $category = $categoryRepository->findOneBy(['name' => $categoryName]);
-
-        $wishMaps = $wishMapRepository->findBy(['category' => $category]);
+        $wishMaps = $wishMapRepository->wishMapsGetNotPrivateAccs_withCategoryName($categoryName);
 
         $categoryCounter = $wishMapRepository->wishMapsGetCategoryCount();
 
@@ -187,6 +185,51 @@ class WishMapController extends AbstractController
             'wishmaps' => $pagination,
             'wmCategoryCounter' => $categoryCounter
         ]);
+    }
+
+
+    #[Route('/wishmap/archive', name: 'wish_map_archive', methods: ['get', 'post'])]
+    public function archivedWishMapCard(PaginatorInterface $paginator, Request $request,
+                                        WishMapRepository $wishMapRepository, UserActionValidation $validation)
+    {
+
+        $wishMaps = $wishMapRepository->findBy(['isArchived' => 1,
+            'user' => $this->getUser()]);
+
+        $pagination = $paginator->paginate(
+            $wishMaps,
+            $request->query->getInt('page', 1),
+            6
+        );
+
+        return $this->render('wish_map/archive.html.twig', [
+            'wishmaps' => $pagination
+        ]);
+    }
+
+    #[Route('/wishmap/archive/{id}', name: 'add_archive_wish_map', methods: ['get', 'post'])]
+    public function addToArchive(int $id,
+                                 WishMapRepository $wishMapRepository)
+    {
+
+        $wishMap = $wishMapRepository->find($id);
+        $wishMap->setIsArchived(true);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return $this->redirectToRoute('wish_map');
+
+    }
+
+    #[Route('/wishmap/archive/unzip/{id}', name: 'add_archive_wish_map', methods: ['get', 'post'])]
+    public function unzipWishMap(int $id,
+                                 WishMapRepository $wishMapRepository)
+    {
+        $wishMap = $wishMapRepository->find($id);
+        $wishMap->setIsArchived(false);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return $this->redirectToRoute('wish_map_archive');
+
     }
 
 }

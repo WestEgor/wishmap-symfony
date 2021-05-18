@@ -64,6 +64,11 @@ class WishMap
     private User $user;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isArchived;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Comments", cascade={"persist","remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="wish_map_comments",
      *      joinColumns={@ORM\JoinColumn(name="wish_map_id", referencedColumnName="id")},
@@ -78,6 +83,7 @@ class WishMap
     {
         $this->startDate = new DateTime('now');
         $this->progress = 0;
+        $this->isArchived = false;
     }
 
 
@@ -221,6 +227,24 @@ class WishMap
         $this->comments = $comments;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
+    /**
+     * @param bool $isArchived
+     */
+    public function setIsArchived(bool $isArchived): void
+    {
+        $this->isArchived = $isArchived;
+    }
+
+
 
     /**
      * @return User
