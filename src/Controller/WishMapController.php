@@ -122,12 +122,11 @@ class WishMapController extends AbstractController
 
 
     #[ROUTE('/wishmap/all', name: 'wishmap_all')]
-    public function showAllWishMapcards(WishMapRepository $wishMapRepository, CategoryRepository $categoryRepository,
+    public function showAllWishMapcards(WishMapRepository $wishMapRepository,
                                         Request $request, PaginatorInterface $paginator)
     {
-        $wishMaps = $wishMapRepository->findAll();
+        $wishMaps = $wishMapRepository->wishMapsGetNotPrivateAccs();
         $categoryCounter = $wishMapRepository->wishMapsGetCategoryCount();
-
 
         $pagination = $paginator->paginate(
             $wishMaps,

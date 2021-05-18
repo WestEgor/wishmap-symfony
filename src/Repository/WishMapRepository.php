@@ -24,7 +24,7 @@ class WishMapRepository extends ServiceEntityRepository
     public function findByCategory($category): QueryBuilder
     {
         return $this->createQueryBuilder('wm')
-            ->select('wm.id, wm.name, wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
+            ->select('wm.id, wm.name, wm.description, wm.image, wm.progress, wm.startDate, wm.finishDate,
             identity(wm.category) AS category_id')
             ->andWhere('wm.category = :category')
             ->setParameter('category', $category)
@@ -44,10 +44,23 @@ class WishMapRepository extends ServiceEntityRepository
     public function wishMapsGetCategoryCount()
     {
         return $this->createQueryBuilder('wm')
-            ->leftJoin('wm.category', 'cat')
+            ->innerJoin('wm.category', 'cat')
+            ->innerJoin('wm.user', 'u')
             ->select('cat.name, COUNT(wm.category) AS count')
             ->andWhere('cat.id = wm.category')
+            ->andWhere('u.isPrivate!=1')
             ->groupBy('wm.category')
+            ->getQuery()
+            ->getScalarResult();
+    }
+
+    public function wishMapsGetNotPrivateAccs()
+    {
+        return $this->createQueryBuilder('wm')
+            ->innerJoin('wm.user', 'u')
+            ->innerJoin('wm.category', 'c')
+            ->select('wm', 'c')
+            ->andWhere('u.isPrivate != 1')
             ->getQuery()
             ->getScalarResult();
     }

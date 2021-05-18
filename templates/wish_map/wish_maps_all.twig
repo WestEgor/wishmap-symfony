@@ -35,36 +35,36 @@
                 <div class="col-sm-3">
                     <div class="card" id="card-body">
                         <div class="card-body">
-                            <p class="card-text category">{{ wishmap.name }}</p>
-                            {% if wishmap.image is not null %}
+                            <p class="card-text category">{{ wishmap.wm_name }}</p>
+                            {% if wishmap.wm_image is not null %}
                                 <img class="card-img-top" style="max-width: 100%; height: auto"
-                                     src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
+                                     src="{{ asset('uploads/wish_map_images/' ~ wishmap.wm_image) }}"
                                      alt="Card image cap">
                             {% endif %}
                             <div class="progress" style="margin-top: 6px">
                                 <div id="progress-bar" role="progressbar"
-                                     style="width: {{ wishmap.progress }}%;" aria-valuenow="{{ wishmap.progress }}"
+                                     style="width: {{ wishmap.wm_progress }}%;" aria-valuenow="{{ wishmap.wm_progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
-                                    <span>{{ wishmap.progress }}%</span>
+                                    <span>{{ wishmap.wm_progress }}%</span>
                                 </div>
                             </div>
-                            {% if wishmap.category is not null %}
-                                <p class="card-text category">{{ wishmap.category.name }}</p>
+                            {% if wishmap.c_name is not null %}
+                                <p class="card-text category">{{ wishmap.c_name }}</p>
                             {% endif %}
 
-                            <p class="card-text description">{{ wishmap.description }}</p>
+                            <p class="card-text description">{{ wishmap.wm_description }}</p>
                             <div class="row">
-                                {% if (wishmap.startDate) %}
+                                {% if (wishmap.wm_startDate) %}
                                     <label>Start date:</label>
                                     <p class="card-text"
-                                       style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
+                                       style="margin-left:10px ">{{ wishmap.wm_startDate|date('d-m-Y')|e }}</p>
                                 {% endif %}
                                 <label style="margin-left:10px ">Finish date:</label>
                                 <p class="card-text"
-                                   style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                                   style="margin-left:10px ">{{ wishmap.wm_finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <a class="btn btn-outline-warning" href="/wishmap/take-a-card/{{ wishmap.id }}">
+                        <a class="btn btn-outline-warning" href="/wishmap/take-a-card/{{ wishmap.wm_id }}">
                             Take a card</a>
                     </div>
                 </div>
