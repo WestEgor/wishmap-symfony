@@ -7,15 +7,25 @@
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
 
     <div class="column left">
-        {% if wmCategoryCounter %}
-            <div class="category">Categories:</div>
-            {% for wmcateg in wmCategoryCounter %}
-                <p class="category">{{ wmcateg.name }}
-                    <span style=" display: inline-block; width: 35px; height: 25px; border: 1px solid #FFFFFF;text-align: center;">
-                        {{ wmcateg.count }}</span></p>
-            {% endfor %}
-
-        {% endif %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col"><a class="category-main" href="/wishmap/all">Categories:</a></th>
+            </tr>
+            </thead>
+            {% if wmCategoryCounter %}
+                <tbody>
+                {% for wmcateg in wmCategoryCounter %}
+                    <tr>
+                        <td><a class="category" href="/wishmap/all/category/{{ wmcateg.name }}">{{ wmcateg.name }}
+                            </a></td>
+                        <td><span style=" display: inline-block; width: 35px; height: 25px; border: 1px solid #FFFFFF;text-align: center;">
+                        {{ wmcateg.count }}</span></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
         <div>{{ knp_pagination_render(wishmaps) }}</div>
     </div>
 

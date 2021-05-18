@@ -15,7 +15,6 @@ class UserController extends AbstractController
     #[Route('/user/update', name: 'profile_update')]
     public function profileUpdate(ImageUploader $imageUploader, Request $request): Response
     {
-
         $user = $this->getUser();
 
         $form = $this->createForm(ProfileType::class, $user);
@@ -33,7 +32,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('wish_map');
         }
 
-        return $this->render('person/index.html.twig', [
+        return $this->render('user/update_user_profile.html.twig', [
             'form' => $form->createView(),
         ]);
     }

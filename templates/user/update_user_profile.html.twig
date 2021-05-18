@@ -1,12 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RegistrationController!{% endblock %}
+{% block title %}Update profile{% endblock %}
 
 {% block body %}
     <div class="form-group mx-sm-3 mb-2" id="firstStage">
         {{ form_start(form) }}
-        {{ form_row(form.username) }}
-        {{ form_row(form.password) }}
         {{ form_row(form.nickname) }}
         {{ form_row(form.avatar) }}
         {{ form_row(form.profileDescription) }}

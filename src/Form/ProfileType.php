@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -37,6 +38,9 @@ class ProfileType extends AbstractType
                 ],
             ])
             ->add('profileDescription', TextareaType::class, ['attr' => ['class' => 'form-control']])
+            ->add('isPrivate', CheckboxType::class, [
+                'label' => 'Are you want to make your account private?',
+                'required' => false])
             ->add('save', SubmitType::class, [
                 'label' => 'Update',
                 'attr' => ['class' => 'btn btn-primary mt-3']

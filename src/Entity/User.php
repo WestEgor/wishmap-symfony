@@ -52,6 +52,21 @@ class User implements UserInterface
      */
     private string $profileDescription;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isPrivate;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->roles = ['ROLE_USER'];
+        $this->isPrivate = false;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +170,22 @@ class User implements UserInterface
     public function setProfileDescription(string $profileDescription): void
     {
         $this->profileDescription = $profileDescription;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrivate(): bool
+    {
+        return $this->isPrivate;
+    }
+
+    /**
+     * @param bool $isPrivate
+     */
+    public function setIsPrivate(bool $isPrivate): void
+    {
+        $this->isPrivate = $isPrivate;
     }
 
 

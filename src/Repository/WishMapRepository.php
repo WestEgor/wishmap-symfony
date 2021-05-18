@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\WishMap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,10 +21,10 @@ class WishMapRepository extends ServiceEntityRepository
     }
 
 
-    public function findByCategory(array $category): QueryBuilder
+    public function findByCategory($category): QueryBuilder
     {
         return $this->createQueryBuilder('wm')
-            ->select('wm.id, wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
+            ->select('wm.id, wm.name, wm.description, wm.image, wm.process, wm.startDate, wm.finishDate,
             identity(wm.category) AS category_id')
             ->andWhere('wm.category = :category')
             ->setParameter('category', $category)
@@ -42,7 +41,7 @@ class WishMapRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function wishMapsLeftJoin()
+    public function wishMapsGetCategoryCount()
     {
         return $this->createQueryBuilder('wm')
             ->leftJoin('wm.category', 'cat')

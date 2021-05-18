@@ -60,8 +60,13 @@
                                    style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <a class="btn btn-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
-                        <a class="btn btn-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">Delete</a>
+                        <a class="btn btn-outline-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
+                        <div>
+                            <a class="btn btn-outline-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">
+                                Archive</a>
+                            <a class="btn btn-outline-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">
+                                Delete</a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

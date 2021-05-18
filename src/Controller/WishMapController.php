@@ -126,7 +126,7 @@ class WishMapController extends AbstractController
                                         Request $request, PaginatorInterface $paginator)
     {
         $wishMaps = $wishMapRepository->findAll();
-        $wm = $wishMapRepository->wishMapsLeftJoin();
+        $categoryCounter = $wishMapRepository->wishMapsGetCategoryCount();
 
 
         $pagination = $paginator->paginate(
@@ -137,7 +137,7 @@ class WishMapController extends AbstractController
 
         return $this->render('wish_map/wish_maps_all.twig', [
             'wishmaps' => $pagination,
-            'wmCategoryCounter' => $wm
+            'wmCategoryCounter' => $categoryCounter
         ]);
     }
 
@@ -165,15 +165,18 @@ class WishMapController extends AbstractController
         return $this->redirectToRoute('wish_map');
     }
 
-    /*#[Route('/wishmap/category/{id}', name: 'wish_map_category', methods: ['get', 'post'])]
+    #[Route('/wishmap/all/category/{categoryName}', name: 'wish_map_category', methods: ['get', 'post'])]
     public function selectCat(WishMapRepository $wishMapRepository,
                               PaginatorInterface $paginator, CategoryRepository $categoryRepository,
-                              Request $request, $id): Response
+                              Request $request, string $categoryName): Response
     {
 
-        $categories = $categoryRepository->findAll();
-        $category = $categoryRepository->findOneCategoryByCategoryId($id);
-        $wishMaps = $wishMapRepository->findByCategory($category);
+
+        $category = $categoryRepository->findOneBy(['name' => $categoryName]);
+
+        $wishMaps = $wishMapRepository->findBy(['category' => $category]);
+
+        $categoryCounter = $wishMapRepository->wishMapsGetCategoryCount();
 
         $pagination = $paginator->paginate(
             $wishMaps,
@@ -181,12 +184,10 @@ class WishMapController extends AbstractController
             4
         );
 
-
-        return $this->render('wish_map/index.html.twig', [
+        return $this->render('wish_map/wish_maps_all.twig', [
             'wishmaps' => $pagination,
-            'categories' => $categories
+            'wmCategoryCounter' => $categoryCounter
         ]);
-    }*/
-
+    }
 
 }
