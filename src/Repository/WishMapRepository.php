@@ -31,14 +31,16 @@ class WishMapRepository extends ServiceEntityRepository
             ->orderBy('wm.finishDate');
     }
 
-    public function findByUser($user): array
+    public function findUser($user): array
     {
         return $this->createQueryBuilder('wm')
-            ->andWhere('wm.user = :user')
-            ->setParameter('user', $user)
-            ->orderBy('wm.finishDate')
+            ->innerJoin('wm.user', 'u')
+            ->innerJoin('wm.category', 'c')
+            ->select('wm', 'c')
+            ->andWhere('u.isPrivate != 1')
+            ->andWhere('wm.isArchived != 1')
             ->getQuery()
-            ->getResult();
+            ->getScalarResult();
     }
 
     public function wishMapsGetCategoryCount()

@@ -6,19 +6,23 @@
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
     <script src="{{ asset('js/delete_wm.js') }}"></script>
-    <script src="{{ asset('js/delete_category.js') }}"></script>
+    <script src="{{ asset('js/user_search.js') }}"></script>
 
-    {% if user %}
-        <div class="column left">
-            <p>{{ user.nickname }}</p>
-            {% if user.avatar is not null %}
-                <img class="card-img-top" style="max-width: 200px; height: 200px"
-                     src="{{ asset('uploads/wish_map_images/' ~ user.avatar) }}"
-                     alt="Card image cap">
-            {% endif %}
-            <p>{{ user.profileDescription }}</p>
-            <div>{{ knp_pagination_render(wishmaps) }}</div>
-        </div>
+    <div class="column left">
+
+        <div id="search-result"></div>
+
+
+        {% if user %}
+        <p style="margin-top: 30px">{{ user.nickname }}</p>
+        {% if user.avatar is not null %}
+            <img class="card-img-top" style="max-width: 200px; height: 200px"
+                 src="{{ asset('uploads/wish_map_images/' ~ user.avatar) }}"
+                 alt="Card image cap">
+        {% endif %}
+        <p>{{ user.profileDescription }}</p>
+        <div>{{ knp_pagination_render(wishmaps) }}</div>
+    </div>
     {% endif %}
     {% if error|length != 0 %}
         <div class="alert alert-danger" role="alert">

@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\WishMap;
 use App\Form\WishMapType;
-use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use App\Repository\WishMapRepository;
 use App\Service\ImageUploader;
 use App\Service\UserActionValidation;
-use DateTimeImmutable;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,19 +15,32 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
-use Symfony\Component\Validator\Constraints\Date;
 
 class WishMapController extends AbstractController
 {
     private static $error;
 
     #[Route('/wishmap', name: 'wish_map', methods: ['get', 'post'])]
-    public function index(WishMapRepository $wishMapRepository,
+    public function index(WishMapRepository $wishMapRepository, UserRepository $userRepository,
                           PaginatorInterface $paginator, Request $request): Response
     {
-        $user = $this->getUser();
-        $wishMaps = $wishMapRepository->findBy(['user' => $user,
-            'isArchived' => 0]);
+        $nickname = $request->query->get('user');
+        if ($nickname != null) {
+            $user = $userRepository->findOneBy(['nickname' => $nickname,
+                'isPrivate' => 0]);
+            if ($user == null) {
+                static::$error = 'USER DOESNT EXIST OR IT`S PRIVATE ACCOUNT!';
+                return $this->forward('App\Controller\WishMapController::index', [
+                    'error' => static::$error
+                ]);
+            }
+            $wishMaps = $wishMapRepository->findBy(['user' => $user,
+                'isArchived' => 0]);
+        } else {
+            $user = $this->getUser();
+            $wishMaps = $wishMapRepository->findBy(['user' => $user,
+                'isArchived' => 0]);
+        }
 
         $pagination = $paginator->paginate(
             $wishMaps,
@@ -208,9 +220,15 @@ class WishMapController extends AbstractController
     }
 
     #[Route('/wishmap/archive/{id}', name: 'add_archive_wish_map', methods: ['get', 'post'])]
-    public function addToArchive(int $id,
+    public function addToArchive(int $id, UserActionValidation $validation,
                                  WishMapRepository $wishMapRepository)
     {
+        if (!$validation->checkUserWishMapCard($wishMapRepository, $id)) {
+            static::$error = 'YOU ARE CANNOT ADD TO ARCHIVE FOREIGN WISH MAP CARD!';
+            return $this->forward('App\Controller\WishMapController::index', [
+                'error' => static::$error
+            ]);
+        }
 
         $wishMap = $wishMapRepository->find($id);
         $wishMap->setIsArchived(true);
@@ -220,7 +238,7 @@ class WishMapController extends AbstractController
 
     }
 
-    #[Route('/wishmap/archive/unzip/{id}', name: 'add_archive_wish_map', methods: ['get', 'post'])]
+    #[Route('/wishmap/archive/unzip/{id}', name: 'unzip_wish_map', methods: ['get', 'post'])]
     public function unzipWishMap(int $id,
                                  WishMapRepository $wishMapRepository)
     {

@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Form\ProfileType;
+use App\Repository\UserRepository;
 use App\Service\ImageUploader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class UserController extends AbstractController
 {
@@ -35,6 +39,22 @@ class UserController extends AbstractController
         return $this->render('user/update_user_profile.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/wishmap/user', name: 'find_user')]
+    public function userSuggest(UserRepository $userRepository, Request $request)
+    {
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $nickname = $request->query->get('user');
+        $user = $userRepository->findUserByNick($nickname);
+        $userJson = $serializer->serialize($user, 'json');
+        return new Response(
+            $userJson,
+            Response::HTTP_OK
+        );
     }
 
 }
