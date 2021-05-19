@@ -36,23 +36,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function findOneByUserName($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.username = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findOneById($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.id = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
 
     public function findUserByNick($suggest)
     {
@@ -60,7 +43,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->select('u.nickname')
             ->andWhere('u.nickname like :val')
             ->andWhere('u.isPrivate = 0')
+            ->orderBy('u.nickname', 'ASC')
             ->setParameter('val', '%' . $suggest . '%')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult();
     }
