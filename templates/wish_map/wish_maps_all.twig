@@ -3,7 +3,7 @@
 {% block title %}All wish maps{% endblock %}
 
 {% block body %}
-    {% include('inc/navbarWM.html.twig') %}
+    {{ include('inc/navbarBack.html.twig') }}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
 
     <div class="column left">
@@ -43,7 +43,8 @@
                             {% endif %}
                             <div class="progress" style="margin-top: 6px">
                                 <div id="progress-bar" role="progressbar"
-                                     style="width: {{ wishmap.wm_progress }}%;" aria-valuenow="{{ wishmap.wm_progress }}"
+                                     style="width: {{ wishmap.wm_progress }}%;"
+                                     aria-valuenow="{{ wishmap.wm_progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
                                     <span>{{ wishmap.wm_progress }}%</span>
                                 </div>
@@ -64,8 +65,17 @@
                                    style="margin-left:10px ">{{ wishmap.wm_finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <a class="btn btn-outline-warning" href="/wishmap/take-a-card/{{ wishmap.wm_id }}">
-                            Take a card</a>
+                        <div>
+                            <a class="btn btn-outline-warning" href="/wishmap/take-a-card/{{ wishmap.wm_id }}">
+                                Take a card</a>
+                            <a href="/wishmap/{{ wishmap.wm_id }}/comments" style="margin-left: 30px"><img
+                                        class="card-img-top"
+                                        style="width: 50px; height: 50px"
+                                        src="{{ asset('uploads/fi-xtluxl-comment-square-thin.png') }}"
+                                        alt="Card image cap">
+                            </a>
+                            <span>{{ wishmap.count }}</span></div>
+
                     </div>
                 </div>
             {% endfor %}

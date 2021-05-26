@@ -5,14 +5,10 @@
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
-    <script src="{{ asset('js/delete_wm.js') }}"></script>
     <script src="{{ asset('js/user_search.js') }}"></script>
-
+    <script src="{{ asset('js/delete_wish_map.js') }}"></script>
     <div class="column left">
-
         <div id="search-result"></div>
-
-
         {% if user %}
         <p style="margin-top: 30px">{{ user.nickname }}</p>
         {% if user.avatar is not null %}
@@ -24,11 +20,9 @@
         <div>{{ knp_pagination_render(wishmaps) }}</div>
     </div>
     {% endif %}
-    {% if error|length != 0 %}
-        <div class="alert alert-danger" role="alert">
-            {{ error }}
-        </div>
-    {% endif %}
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
     {% if wishmaps %}
         <div class="row column right" id="card">
             {% for wishmap in wishmaps %}
@@ -49,23 +43,28 @@
                                 </div>
                             </div>
                             {% if wishmap.category is not null %}
-                                <p class="card-text category">{{ wishmap.category.name }}</p>
+                                <p class="category btn-info">{{ wishmap.category.name }}</p>
                             {% endif %}
 
                             <p class="card-text description">{{ wishmap.description }}</p>
-                            <div class="row">
-                                {% if (wishmap.startDate) %}
-                                    <label>Start date:</label>
-                                    <p class="card-text"
-                                       style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
-                                {% endif %}
-                                <label style="margin-left:10px ">Finish date:</label>
-                                <p class="card-text"
-                                   style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                            <div>
+                                <label>Start date:</label>
+                                <p class="card-text">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
+                                <label>Finish date:</label>
+                                <p class="card-text">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <a class="btn btn-outline-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
-                        <div>
+                        <div style="margin-left: 30px">
+                            <a class="btn btn-outline-success margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
+                            <a href="/wishmap/{{ wishmap.id }}/comments" style="margin-left: 30px"><img
+                                        class="card-img-top"
+                                        style="width: 50px; height: 50px"
+                                        src="{{ asset('uploads/fi-xtluxl-comment-square-thin.png') }}"
+                                        alt="Card image cap">
+                            </a>
+                            <span>{{ wishmap.comments.count() }}</span>
+                        </div>
+                        <div style="margin:0 auto;text-align:center">
                             <a class="btn btn-outline-warning margin" href="/wishmap/archive/{{ wishmap.id }}">
                                 Archive</a>
                             <a class="btn btn-outline-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">

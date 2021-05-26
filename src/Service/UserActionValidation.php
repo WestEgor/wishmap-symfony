@@ -21,8 +21,6 @@ class UserActionValidation
         $this->security = $security;
     }
 
-    /*
-     * */
     public function checkUserWishMapCard(WishMapRepository $wishMapRepository, int $id)
     {
         $user = $this->security->getUser();
@@ -31,8 +29,7 @@ class UserActionValidation
         $wishMap = $wishMapRepository->find($id);
         $userWishMapId = $wishMap->getUser()->getId();
 
-        if ($userId != $userWishMapId) return false;
-        return true;
+        return $userId === $userWishMapId;
     }
 
 }

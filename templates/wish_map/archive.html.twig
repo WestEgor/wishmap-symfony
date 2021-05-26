@@ -43,8 +43,7 @@
                                    style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <a class="btn btn-outline-primary margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
-                        <div>
+                        <div style="margin:0 auto;text-align:center">
                             <a class="btn btn-outline-warning margin" href="/wishmap/archive/unzip/{{ wishmap.id }}">
                                 Unzip</a>
                             <a class="btn btn-outline-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">
@@ -58,6 +57,5 @@
     {% else %}
         <p>You have no WISHES!</p>
     {% endif %}
-
 
 {% endblock %}

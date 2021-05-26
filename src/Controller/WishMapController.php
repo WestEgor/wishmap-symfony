@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 use DateTime;
 
 class WishMapController extends AbstractController
 {
-    private static $error;
 
     #[Route('/wishmap', name: 'wish_map', methods: ['get', 'post'])]
     public function index(WishMapRepository $wishMapRepository, UserRepository $userRepository,
@@ -29,10 +29,9 @@ class WishMapController extends AbstractController
             $user = $userRepository->findOneBy(['nickname' => $nickname,
                 'isPrivate' => 0]);
             if ($user == null) {
-                static::$error = 'USER DOESNT EXIST OR IT`S PRIVATE ACCOUNT!';
-                return $this->forward('App\Controller\WishMapController::index', [
-                    'error' => static::$error
-                ]);
+                $this->addFlash('info',
+                    'USER DOESNT EXIST OR IT`S PRIVATE ACCOUNT!');
+                return $this->forward('App\Controller\WishMapController::index');
             }
             $wishMaps = $wishMapRepository->findBy(['user' => $user,
                 'isArchived' => 0]);
@@ -40,6 +39,12 @@ class WishMapController extends AbstractController
             $user = $this->getUser();
             $wishMaps = $wishMapRepository->findBy(['user' => $user,
                 'isArchived' => 0]);
+        }
+
+        $test = [];
+
+        foreach ($wishMaps as $wm) {
+            $test[] = $wm->getComments()->count();
         }
 
         $pagination = $paginator->paginate(
@@ -51,7 +56,7 @@ class WishMapController extends AbstractController
         return $this->render('wish_map/index.html.twig', [
             'wishmaps' => $pagination,
             'user' => $user,
-            'error' => static::$error
+            'test' => $test
         ]);
     }
 
@@ -75,6 +80,10 @@ class WishMapController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($wishMap);
             $entityManager->flush();
+
+            $this->addFlash('info',
+                'Wish map successfully created!');
+
             return $this->redirectToRoute('wish_map');
         }
         return $this->render('wish_map/new_wish_map.html.twig', [
@@ -88,10 +97,9 @@ class WishMapController extends AbstractController
                                   WishMapRepository $wishMapRepository, Request $request): RedirectResponse|Response
     {
         if (!$validation->checkUserWishMapCard($wishMapRepository, $id)) {
-            static::$error = 'YOU ARE CANNOT MODIFY FOREIGN WISH MAP CARD!';
-            return $this->forward('App\Controller\WishMapController::index', [
-                'error' => static::$error
-            ]);
+            $this->addFlash('info',
+                'YOU ARE CANNOT MODIFY FOREIGN WISH MAP CARD!');
+            return $this->forward('App\Controller\WishMapController::index');
         }
 
         $wishMap = $wishMapRepository->find($id);
@@ -99,15 +107,15 @@ class WishMapController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $wishMapImage = $form->get('image')->getData();
-
             if ($wishMapImage) {
                 $imageName = $imageUploader->upload($wishMapImage);
                 $wishMap->setImage($imageName);
             }
-
             $entityManager = $this->getDoctrine()->getManager();
-
             $entityManager->flush();
+
+            $this->addFlash('info',
+                'Wish map successfully updated!');
             return $this->redirectToRoute('wish_map');
         }
         return $this->render('wish_map/new_wish_map.html.twig', [
@@ -119,16 +127,19 @@ class WishMapController extends AbstractController
     public function deleteWishMap(int $id, WishMapRepository $wishMapRepository, UserActionValidation $validation)
     {
         if (!$validation->checkUserWishMapCard($wishMapRepository, $id)) {
-            static::$error = 'YOU ARE CANNOT DELETE FOREIGN WISH MAP CARD!';
-            return $this->forward('App\Controller\WishMapController::index', [
-                'error' => static::$error
-            ]);
+            $this->addFlash('info',
+                'YOU ARE CANNOT DELETE FOREIGN WISH MAP CARD!');
+            return $this->forward('App\Controller\WishMapController::index');
         }
         $wishMap = $wishMapRepository->find($id);
-        $wishMap->setComments([]);
+        $wishMap->getComments()->clear();
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($wishMap);
         $entityManager->flush();
+
+        $this->addFlash('info',
+            'Wish map successfully deleted!');
+
         $response = new Response();
         return $response->send();
     }
@@ -139,6 +150,7 @@ class WishMapController extends AbstractController
                                         Request $request, PaginatorInterface $paginator)
     {
         $wishMaps = $wishMapRepository->wishMapsGetNotPrivateAccs();
+
         $categoryCounter = $wishMapRepository->wishMapsGetCategoryCount();
 
         $pagination = $paginator->paginate(
@@ -157,10 +169,9 @@ class WishMapController extends AbstractController
     public function takeWishMapCard(int $id, WishMapRepository $wishMapRepository, UserActionValidation $validation)
     {
         if ($validation->checkUserWishMapCard($wishMapRepository, $id)) {
-            static::$error = 'YOU ARE CANNOT TAKE YOUR OWN CARD!';
-            return $this->forward('App\Controller\WishMapController::index', [
-                'error' => static::$error
-            ]);
+            $this->addFlash('info',
+                'YOU ARE CANNOT TAKE YOUR OWN CARD!');
+            return $this->forward('App\Controller\WishMapController::index');
         }
         $wishMap = clone $wishMapRepository->find($id);
         $oldStartDate = $wishMap->getStartDate();
@@ -169,11 +180,13 @@ class WishMapController extends AbstractController
         $wishMap->setUser($this->getUser());
         $wishMap->setProgress(0);
         $wishMap->setStartDate(new DateTime('now'));
-        $wishMap->setComments([]);
+        $wishMap->getComments()->clear();
         $wishMap->setFinishDate($wishMap->countDateDifference($oldStartDate, $oldFinishDate, new DateTime('now')));
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($wishMap);
         $entityManager->flush();
+        $this->addFlash('info',
+            'Successfully "stolen" :)');
         return $this->redirectToRoute('wish_map');
     }
 
@@ -224,16 +237,17 @@ class WishMapController extends AbstractController
                                  WishMapRepository $wishMapRepository)
     {
         if (!$validation->checkUserWishMapCard($wishMapRepository, $id)) {
-            static::$error = 'YOU ARE CANNOT ADD TO ARCHIVE FOREIGN WISH MAP CARD!';
-            return $this->forward('App\Controller\WishMapController::index', [
-                'error' => static::$error
-            ]);
+            $this->addFlash('info',
+                'YOU ARE CANNOT ADD TO ARCHIVE FOREIGN WISH MAP CARD!');
+            return $this->forward('App\Controller\WishMapController::index');
         }
 
         $wishMap = $wishMapRepository->find($id);
         $wishMap->setIsArchived(true);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
+        $this->addFlash('info',
+            'Wish map card has been successfully archived!');
         return $this->redirectToRoute('wish_map');
 
     }
@@ -246,6 +260,8 @@ class WishMapController extends AbstractController
         $wishMap->setIsArchived(false);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
+        $this->addFlash('info',
+            'Wish map card has been successfully unzipped!');
         return $this->redirectToRoute('wish_map_archive');
 
     }

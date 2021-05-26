@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Validator\Constraints\Date;
 
 /**
@@ -76,7 +77,7 @@ class WishMap
      *      unique=true)}
      *      )
      */
-    private $comments;
+    private PersistentCollection $comments;
 
 
     public function __construct()
@@ -84,6 +85,7 @@ class WishMap
         $this->startDate = new DateTime('now');
         $this->progress = 0;
         $this->isArchived = false;
+        $this->comments = new ArrayCollection();
     }
 
 
@@ -224,7 +226,7 @@ class WishMap
      */
     public function setComments($comments): self
     {
-        $this->comments = $comments;
+        $this->comments[] = $comments;
         return $this;
     }
 
@@ -243,7 +245,6 @@ class WishMap
     {
         $this->isArchived = $isArchived;
     }
-
 
 
     /**

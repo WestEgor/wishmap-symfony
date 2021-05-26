@@ -57,4 +57,14 @@ class UserController extends AbstractController
         );
     }
 
+    #[Route('/users', name: 'find_all_users')]
+    public function findAllUsers(UserRepository $userRepository)
+    {
+        $users = $userRepository->findAllNoPrivate();
+
+        return $this->render('user/all_profiles.html.twig', [
+            'users' => $users
+        ]);
+    }
+
 }

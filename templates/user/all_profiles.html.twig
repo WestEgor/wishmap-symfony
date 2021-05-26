@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+    {{ include('inc/navbarBack.html.twig') }}
+    {% if users %}
+        <table id="articles" class="table table-stripped">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Nickname</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i,user in users %}
+                <tr>
+                    <td>{{ i+1 }}</td>
+                    <td>
+                        <a href="/wishmap?user={{ user.nickname }}">{{ user.nickname }}</a>
+                        </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>no data</p>
+    {% endif %}
+
+
+{% endblock %}

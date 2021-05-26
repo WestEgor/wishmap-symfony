@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CommentsRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,10 +25,23 @@ class Comments
     private string $comment;
 
     /**
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"}))
+     */
+    private DateTime $dateOfSend;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="send_user_id", referencedColumnName="id", nullable=false)
      */
     private User $sendUser;
+
+    /**
+     * Comments constructor.
+     */
+    public function __construct()
+    {
+        $this->dateOfSend = new DateTime('now');
+    }
 
     /**
      * @return int
@@ -62,6 +76,23 @@ class Comments
     }
 
     /**
+     * @return DateTime
+     */
+    public function getDateOfSend(): DateTime
+    {
+        return $this->dateOfSend;
+    }
+
+    /**
+     * @param DateTime $dateOfSend
+     */
+    public function setDateOfSend(DateTime $dateOfSend): void
+    {
+        $this->dateOfSend = $dateOfSend;
+    }
+
+
+    /**
      * @return User
      */
     public function getSendUser(): User
@@ -76,7 +107,6 @@ class Comments
     {
         $this->sendUser = $sendUser;
     }
-
 
 
 }

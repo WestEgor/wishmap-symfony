@@ -50,4 +50,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+    public function findAllNoPrivate()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.nickname')
+            ->andWhere('u.isPrivate = 0')
+            ->orderBy('u.nickname','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

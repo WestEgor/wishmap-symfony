@@ -27,19 +27,10 @@ a.category-main {
     font-weight: bold;
 }
 
-
 .description {
     font-family: "Times New Roman", serif;
 }
 
 .margin{
     margin-top: 5px;
-}
-
-.someclass {
-    position: fixed;
-    bottom: 5%;
-    left: 30%;
-    width: 30%;
-    height: 15%;
 }

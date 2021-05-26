@@ -21,28 +21,6 @@ class WishMapRepository extends ServiceEntityRepository
     }
 
 
-    public function findByCategory($category): QueryBuilder
-    {
-        return $this->createQueryBuilder('wm')
-            ->select('wm.id, wm.name, wm.description, wm.image, wm.progress, wm.startDate, wm.finishDate,
-            identity(wm.category) AS category_id')
-            ->andWhere('wm.category = :category')
-            ->setParameter('category', $category)
-            ->orderBy('wm.finishDate');
-    }
-
-    public function findUser($user): array
-    {
-        return $this->createQueryBuilder('wm')
-            ->innerJoin('wm.user', 'u')
-            ->innerJoin('wm.category', 'c')
-            ->select('wm', 'c')
-            ->andWhere('u.isPrivate != 1')
-            ->andWhere('wm.isArchived != 1')
-            ->getQuery()
-            ->getScalarResult();
-    }
-
     public function wishMapsGetCategoryCount()
     {
         return $this->createQueryBuilder('wm')
@@ -62,9 +40,11 @@ class WishMapRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('wm')
             ->innerJoin('wm.user', 'u')
             ->innerJoin('wm.category', 'c')
-            ->select('wm', 'c')
+            ->leftJoin('wm.comments', 'com')
+            ->select('wm', 'c' ,'COUNT(com.id) as count')
             ->andWhere('u.isPrivate != 1')
             ->andWhere('wm.isArchived != 1')
+           ->groupBy('wm.id')
             ->getQuery()
             ->getScalarResult();
     }
@@ -74,7 +54,6 @@ class WishMapRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('wm')
             ->innerJoin('wm.user', 'u')
             ->innerJoin('wm.category', 'c')
-            ->select('wm', 'c')
             ->andWhere('c.name = :name')
             ->andWhere('u.isPrivate != 1')
             ->andWhere('wm.isArchived != 1')
@@ -82,5 +61,6 @@ class WishMapRepository extends ServiceEntityRepository
             ->getQuery()
             ->getScalarResult();
     }
+
 
 }
