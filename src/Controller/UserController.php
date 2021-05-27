@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ProfileType;
 use App\Repository\UserRepository;
 use App\Service\ImageUploader;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,12 +59,18 @@ class UserController extends AbstractController
     }
 
     #[Route('/users', name: 'find_all_users')]
-    public function findAllUsers(UserRepository $userRepository)
+    public function findAllUsers(PaginatorInterface $paginator, Request $request, UserRepository $userRepository)
     {
         $users = $userRepository->findAllNoPrivate();
 
+        $pagination = $paginator->paginate(
+            $users,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('user/all_profiles.html.twig', [
-            'users' => $users
+            'users' => $pagination
         ]);
     }
 

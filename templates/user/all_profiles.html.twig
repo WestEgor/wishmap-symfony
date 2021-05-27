@@ -17,15 +17,15 @@
                 <tr>
                     <td>{{ i+1 }}</td>
                     <td>
-                        <a href="/wishmap?user={{ user.nickname }}">{{ user.nickname }}</a>
-                        </td>
+                        <a href="{{ path('wish_map', {user:user.nickname}) }}">{{ user.nickname }}</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <div class="paginator">{{ knp_pagination_render(users) }}</div>
     {% else %}
         <p>no data</p>
     {% endif %}
-
 
 {% endblock %}

@@ -5,8 +5,7 @@
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
-    <script src="{{ asset('js/delete_wm.js') }}"></script>
-    <script src="{{ asset('js/delete_category.js') }}"></script>
+    <script src="{{ asset('js/delete_wish_map_card.js') }}"></script>
 
     {% if wishmaps %}
         <div class="row column right" id="card">
@@ -14,39 +13,34 @@
                 <div class="col-sm-3">
                     <div class="card" id="card-body">
                         <div class="card-body">
-                            <p class="card-text category">{{ wishmap.name }}</p>
+                            <p class="card-text wishmap-name">{{ wishmap.name }}</p>
                             {% if wishmap.image is not null %}
-                                <img class="card-img-top" style="max-width: 100%; height: auto"
+                                <img class="card-img-top wishmap-image"
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            <div class="progress" style="margin-top: 6px">
+                            <div class="progress wishmap-progress-margin ">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.progress }}%;" aria-valuenow="{{ wishmap.progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
-                                    <span>{{ wishmap.progress }}%</span>
+                                    <span class="wishmap-body-font">{{ wishmap.progress }}%</span>
                                 </div>
                             </div>
-                            {% if wishmap.category is not null %}
-                                <p class="card-text category">{{ wishmap.category.name }}</p>
-                            {% endif %}
-
-                            <p class="card-text description">{{ wishmap.description }}</p>
-                            <div class="row">
-                                {% if (wishmap.startDate) %}
-                                    <label>Start date:</label>
-                                    <p class="card-text"
-                                       style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
-                                {% endif %}
-                                <label style="margin-left:10px ">Finish date:</label>
-                                <p class="card-text"
-                                   style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                            <p class="btn-info wishmap-category">{{ wishmap.category.name }}</p>
+                            <p class="card-text wishmap-body-font">{{ wishmap.description }}</p>
+                            <div>
+                                <label class="wishmap-body-font">Start date:</label>
+                                <p class="card-text wishmap-body-font">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
+                                <label class="wishmap-body-font">Finish date:</label>
+                                <p class="card-text wishmap-body-font">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <div style="margin:0 auto;text-align:center">
-                            <a class="btn btn-outline-warning margin" href="/wishmap/archive/unzip/{{ wishmap.id }}">
+                        <div class="wishmap-delete-archive-button">
+                            <a class="btn btn-outline-warning wishmap-body-font"
+                               href="{{ path('wish_map_unzip',{ id: wishmap.id }) }}">
                                 Unzip</a>
-                            <a class="btn btn-outline-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">
+                            <a class="btn btn-outline-danger wishmap-body-font" id="delete-wishmap"
+                               data-id="{{ wishmap.id }}">
                                 Delete</a>
                         </div>
                     </div>
@@ -55,7 +49,7 @@
         </div>
 
     {% else %}
-        <p>You have no WISHES!</p>
+        <p>You have no archived wish map cards!</p>
     {% endif %}
 
 {% endblock %}

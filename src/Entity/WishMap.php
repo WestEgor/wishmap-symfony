@@ -77,7 +77,7 @@ class WishMap
      *      unique=true)}
      *      )
      */
-    private PersistentCollection $comments;
+    private $comments;
 
 
     public function __construct()

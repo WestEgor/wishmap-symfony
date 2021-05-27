@@ -5,43 +5,35 @@
 {% block body %}
     {{ include('inc/navbarBack.html.twig') }}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
-    <script src="{{ asset('js/user_search.js') }}"></script>
     <script src="{{ asset('js/add_comment.js') }}"></script>
     <script src="{{ asset('js/delete_comment.js') }}"></script>
 
-    <div style="width: 20%; float: left;  height: auto;">
+    <div class="comment-page-left">
         {% if wishmap %}
             <div class="col-md-auto">
                 <div class="card" id="card-body">
                     <div class="card-body">
-                        <p class="card-text category">{{ wishmap.name }}</p>
+                        <p class="card-text wishmap-name">{{ wishmap.name }}</p>
                         {% if wishmap.image is not null %}
-                            <img class="card-img-top" style="max-width: 200px; height: 200px"
+                            <img class="card-img-top wishmap-image"
                                  src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                  alt="Card image cap">
                         {% endif %}
-                        <div class="progress" style="margin-top: 6px; max-width: 200px">
+                        <div class="progress wishmap-progress-margin">
                             <div id="progress-bar" role="progressbar"
                                  style="width: {{ wishmap.progress }}%;"
                                  aria-valuenow="{{ wishmap.progress }}"
                                  aria-valuemin="0" aria-valuemax="100">
-                                <span>{{ wishmap.progress }}%</span>
+                                <span class="wishmap-body-font">{{ wishmap.progress }}%</span>
                             </div>
                         </div>
-                        {% if wishmap.category is not null %}
-                            <p class="card-text category">{{ wishmap.category.name }}</p>
-                        {% endif %}
-
-                        <p class="card-text description">{{ wishmap.description }}</p>
+                        <p class="card-text btn-info wishmap-category">{{ wishmap.category.name }}</p>
+                        <p class="card-text wishmap-body-font">{{ wishmap.description }}</p>
                         <div class="row">
-                            {% if (wishmap.startDate) %}
-                                <label>Start date:</label>
-                                <p class="card-text"
-                                   style="margin-left:10px ">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
-                            {% endif %}
-                            <label style="margin-left:10px ">Finish date:</label>
-                            <p class="card-text"
-                               style="margin-left:10px ">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                            <label class="wishmap-body-font">Start date:</label>
+                            <p class="card-text wishmap-body-font">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
+                            <label class="wishmap-body-font">Finish date:</label>
+                            <p class="card-text wishmap-body-font">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                         </div>
                     </div>
                 </div>
@@ -49,31 +41,33 @@
         {% endif %}
     </div>
 
-    <div style="width:30%; height: auto; float: left; margin-left: 150px">
-
+    <div class="comment-page-center">
         {% for message in app.flashes('info') %}
             <div class="alert alert-danger">{{ message }}</div>
         {% endfor %}
-        <h4>Comments</h4>
+
+        <p class="h4">Comments</p>
         {% if comments %}
             {% for comment in comments %}
                 <div>
-                    <p class="h5" style="margin-top: 10px">{{ comment.sendUser.nickname }}
+                    <p class="h5" class="comment-nickname">{{ comment.sendUser.nickname }}
+                        <span class="comment-date">{{ comment.dateOfSend|date('d-m-Y H:i') }}</span>
                     </p>
-                    <p style="margin-top: -10px">{{ comment.comment }}</p>
-                    <span style="font-size: 12px;margin-top: -10px ">{{ comment.dateOfSend|date('d-m-Y H:i') }}</span>
-                    <a href="#" id="delete-comment" data-id="{{ comment.id }}">Delete</a>
+                    <p class="comment-body">{{ comment.comment }}
+                        <a href="#" id="delete-comment" data-id="{{ comment.id }}">Delete</a>
+                    </p>
                 </div>
             {% endfor %}
             <div>{{ knp_pagination_render(comments) }}</div>
         {% endif %}
     </div>
-    <div style="width:30%; height: auto; float: right; margin-right: 10px">
-        <form id="algin-form">
+    <div class="comment-page-right">
+        <form id="align-form">
             <div class="form-group">
-                <h5>Leave a comment</h5> <label for="message">Message
-                    <textarea name="msg" id="msg" cols="30" rows="5" class="form-control"
-                              style="background-color: deepskyblue;"></textarea></label>
+                <p class="h5">Leave a comment</p>
+                <label class="h6" for="message">Message
+                    <textarea class="form-control comment-textarea" name="msg" id="msg" cols="30" rows="5">
+                    </textarea></label>
             </div>
             <div class="form-group">
                 <button type="button" id="post" class="btn btn-outline-warning" data-id="{{ wishmap.id }}">
@@ -82,5 +76,4 @@
             </div>
         </form>
     </div>
-
 {% endblock %}

@@ -17,7 +17,8 @@ $(document).ready(function () {
                         .map(i => item[i]))
                     result.html('');
                     for (let i = 0; i < arrayRes.length; i++) {
-                        result.append('<a href="/wishmap?user=' + arrayRes[i] + '">' + arrayRes[i] + '</a> <br>')
+                        result.append('<a class="btn-success search-form search-font" href="/wishmap?user=' + arrayRes[i] + '">' + arrayRes[i] +
+                            '</a>')
                     }
                 }
             }

@@ -1,17 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RegistrationController!{% endblock %}
+{% block title %}Registration{% endblock %}
 
 {% block body %}
+    {{ include('inc/navbarAuth.html.twig') }}
     <div class="form-group mx-sm-3 mb-2" id="firstStage">
         {{ form_start(form) }}
-        {{ form_row(form.username) }}
-        {{ form_row(form.password) }}
-        {{ form_row(form.nickname) }}
-        {{ form_row(form.avatar) }}
-        {{ form_row(form.profileDescription) }}
-        {{ form_row(form.isPrivate) }}
-        {{ form_end(form) }}
+        <div class="registration-body">
+            {{ form_row(form.username) }}
+            {{ form_row(form.password) }}
+            {{ form_row(form.nickname) }}
+            {{ form_row(form.avatar) }}
+            {{ form_row(form.profileDescription) }}
+            {{ form_row(form.isPrivate) }}
+            {{ form_end(form) }}
+        </div>
     </div>
 
 {% endblock %}

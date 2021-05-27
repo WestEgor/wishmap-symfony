@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentsController extends AbstractController
 {
 
-    #[Route('/wishmap/{wishmapId}/comments', name: 'show_comments')]
+    #[Route('/wishmap/{wishmapId}/comments', name: 'comments_show')]
     public function showComments(PaginatorInterface $paginator, Request $request, int $wishmapId,
                                  WishMapRepository $wishMapRepository): Response
     {

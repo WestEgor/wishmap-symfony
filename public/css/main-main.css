@@ -1,0 +1,184 @@
+.column {
+    float: left;
+    padding-bottom: 10px;
+}
+
+.left {
+    margin-left: 10px;
+    width: 25%;
+}
+
+.right {
+    margin-top: 5px;
+    width: 75%;
+}
+
+.profile-nickname {
+    margin-top: 30px;
+    font-family: "Courier New", serif;
+    font-style: normal;
+    font-size: 36px;
+}
+
+.profile-description {
+    font-family: "Courier New", serif;
+    font-style: normal;
+    font-size: 18px;
+}
+
+.paginator {
+    width: 25%;
+}
+
+.wishmap-progress-margin {
+    margin-top: 6px;
+}
+
+.profile-image {
+    max-height: 150px;
+    max-width: 100px;
+}
+
+.wishmap-body-font {
+    font-family: "Courier New", serif;
+}
+
+.wishmap-name {
+    text-align: center;
+    font-family: "Courier New", serif;
+    font-size: 18px;
+}
+
+.wishmap-image {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+
+.wishmap-comment-update-button {
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.wishmap-delete-archive-button {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.wishmap-comments {
+    margin-left: 30px;
+}
+
+.wishmap-comments-image {
+    width: 50px;
+    height: 50px;
+}
+
+.wishmap-category {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: "Courier New", serif;
+    font-weight: bold;
+}
+
+.category-list {
+    margin-top: 100px;
+    position: relative;
+    font-family: "Courier New", serif;
+    font-weight: bold;
+}
+
+.category-count {
+    display: inline-block;
+    width: 35px;
+    height: 25px;
+    border: 1px solid #FFFFFF;
+    text-align: center;
+}
+
+.comment-page-left {
+    width: 20%;
+    float: left;
+    height: auto;
+}
+
+.comment-page-center {
+    width: 30%;
+    height: auto;
+    float: left;
+    margin-left: 150px
+}
+
+.comment-page-right {
+    width: 30%;
+    height: auto;
+    float: right;
+    margin-right: 10px
+}
+
+.comment-nickname {
+    margin-top: 10px;
+}
+
+.comment-date {
+    font-size: 12px;
+    margin-top: -10px;
+}
+
+.comment-body {
+    margin-top: -10px;
+}
+
+.comment-textarea {
+    background-color: deepskyblue;
+}
+
+.registration-body {
+    margin-left: 10px;
+    width: 30%;
+}
+
+.registration-label {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.registration-button {
+    margin-top: 10px;
+}
+
+.search-form {
+    margin-left: 100px;
+    width: 230px;
+    border: 2px solid #000000;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+    margin-right: 10px;
+}
+
+.search-font {
+    font-family: "Courier New", serif;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.user-left {
+    width: 50%;
+    float: left;
+    height: auto;
+}
+
+.user-center {
+    width: 30%;
+    height: auto;
+    float: left;
+    margin-left: 150px
+}

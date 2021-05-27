@@ -5,78 +5,80 @@
 {% block body %}
     {% include('inc/navbarWM.html.twig') %}
     <script src="{{ asset('js/change_progress_bar_class.js') }}"></script>
-    <script src="{{ asset('js/user_search.js') }}"></script>
-    <script src="{{ asset('js/delete_wish_map.js') }}"></script>
+    <script src="{{ asset('js/user_searcher.js') }}"></script>
+    <script src="{{ asset('js/delete_wish_map_card.js') }}"></script>
+
     <div class="column left">
-        <div id="search-result"></div>
+        <div id="search-result">
+        </div>
+
         {% if user %}
-        <p style="margin-top: 30px">{{ user.nickname }}</p>
-        {% if user.avatar is not null %}
-            <img class="card-img-top" style="max-width: 200px; height: 200px"
-                 src="{{ asset('uploads/wish_map_images/' ~ user.avatar) }}"
-                 alt="Card image cap">
+            <p class="profile-nickname">{{ user.nickname }}</p>
+            {% if user.avatar is not null %}
+                <img class="card-img-top profile-image"
+                     src="{{ asset('uploads/wish_map_images/' ~ user.avatar) }}"
+                     alt="avatar">
+            {% endif %}
+            <p class="profile-description">{{ user.profileDescription }}</p>
+            <div class="paginator">{{ knp_pagination_render(wishmaps) }}</div>
         {% endif %}
-        <p>{{ user.profileDescription }}</p>
-        <div>{{ knp_pagination_render(wishmaps) }}</div>
     </div>
-    {% endif %}
+
+
     {% for message in app.flashes('info') %}
         <div class="alert alert-danger">{{ message }}</div>
     {% endfor %}
+
     {% if wishmaps %}
         <div class="row column right" id="card">
             {% for wishmap in wishmaps %}
                 <div class="col-sm-3">
                     <div class="card" id="card-body">
                         <div class="card-body">
-                            <p class="card-text category">{{ wishmap.name }}</p>
+                            <p class="card-text wishmap-name">{{ wishmap.name }}</p>
                             {% if wishmap.image is not null %}
-                                <img class="card-img-top" style="max-width: 100%; height: auto"
+                                <img class="card-img-top wishmap-image"
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            <div class="progress" style="margin-top: 6px">
+                            <div class="progress wishmap-progress-margin ">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.progress }}%;" aria-valuenow="{{ wishmap.progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
-                                    <span>{{ wishmap.progress }}%</span>
+                                    <span class="wishmap-body-font">{{ wishmap.progress }}%</span>
                                 </div>
                             </div>
-                            {% if wishmap.category is not null %}
-                                <p class="category btn-info">{{ wishmap.category.name }}</p>
-                            {% endif %}
-
-                            <p class="card-text description">{{ wishmap.description }}</p>
+                            <p class="btn-info wishmap-category">{{ wishmap.category.name }}</p>
+                            <p class="card-text wishmap-body-font">{{ wishmap.description }}</p>
                             <div>
-                                <label>Start date:</label>
-                                <p class="card-text">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
-                                <label>Finish date:</label>
-                                <p class="card-text">{{ wishmap.finishDate|date('d-m-Y') }} </p>
+                                <label class="wishmap-body-font">Start date:</label>
+                                <p class="card-text wishmap-body-font">{{ wishmap.startDate|date('d-m-Y')|e }}</p>
+                                <label class="wishmap-body-font">Finish date:</label>
+                                <p class="card-text wishmap-body-font">{{ wishmap.finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
-                        <div style="margin-left: 30px">
-                            <a class="btn btn-outline-success margin" href="/wishmap/update/{{ wishmap.id }}">Update</a>
-                            <a href="/wishmap/{{ wishmap.id }}/comments" style="margin-left: 30px"><img
-                                        class="card-img-top"
-                                        style="width: 50px; height: 50px"
+                        <div class="wishmap-comment-update-button">
+                            <a class="btn btn-outline-success wishmap-body-font"
+                               href="{{ path('wish_map_update',{ id: wishmap.id }) }}">Update</a>
+                            <a href="{{ path('comments_show',{ wishmapId: wishmap.id }) }}" class="wishmap-comments"><img
+                                        class="card-img-top wishmap-comments-image"
                                         src="{{ asset('uploads/fi-xtluxl-comment-square-thin.png') }}"
-                                        alt="Card image cap">
+                                        alt="comments">
                             </a>
-                            <span>{{ wishmap.comments.count() }}</span>
+                            <span class="wishmap-body-font">{{ wishmap.comments.count() }}</span>
                         </div>
-                        <div style="margin:0 auto;text-align:center">
-                            <a class="btn btn-outline-warning margin" href="/wishmap/archive/{{ wishmap.id }}">
+                        <div class="wishmap-delete-archive-button">
+                            <a class="btn btn-outline-warning wishmap-body-font"
+                               href="{{ path('wish_map_add_archive',{ id: wishmap.id }) }}">
                                 Archive</a>
-                            <a class="btn btn-outline-danger margin" id="delete-wishmap" data-id="{{ wishmap.id }}">
+                            <a class="btn btn-outline-danger wishmap-body-font" id="delete-wishmap"
+                               data-id="{{ wishmap.id }}">
                                 Delete</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-
-    {% else %}
-        <p>You have no WISHES!</p>
     {% endif %}
 
 

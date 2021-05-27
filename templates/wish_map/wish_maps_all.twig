@@ -10,7 +10,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th scope="col"><a class="category-main" href="/wishmap/all">Categories:</a></th>
+                <th scope="col"><a class="category-list" href="/wishmap/all">Categories:</a></th>
             </tr>
             </thead>
             {% if wmCategoryCounter %}
@@ -19,7 +19,7 @@
                     <tr>
                         <td><a class="category" href="/wishmap/all/category/{{ wmcateg.name }}">{{ wmcateg.name }}
                             </a></td>
-                        <td><span style=" display: inline-block; width: 35px; height: 25px; border: 1px solid #FFFFFF;text-align: center;">
+                        <td><span class="category-count">
                         {{ wmcateg.count }}</span></td>
                     </tr>
                 {% endfor %}
@@ -35,46 +35,41 @@
                 <div class="col-sm-3">
                     <div class="card" id="card-body">
                         <div class="card-body">
-                            <p class="card-text category">{{ wishmap.wm_name }}</p>
+                            <p class="card-text wishmap-name">{{ wishmap.wm_name }}</p>
                             {% if wishmap.wm_image is not null %}
-                                <img class="card-img-top" style="max-width: 100%; height: auto"
+                                <img class="card-img-top wishmap-image"
                                      src="{{ asset('uploads/wish_map_images/' ~ wishmap.wm_image) }}"
                                      alt="Card image cap">
                             {% endif %}
-                            <div class="progress" style="margin-top: 6px">
+                            <div class="progress wishmap-progress-margin">
                                 <div id="progress-bar" role="progressbar"
                                      style="width: {{ wishmap.wm_progress }}%;"
                                      aria-valuenow="{{ wishmap.wm_progress }}"
                                      aria-valuemin="0" aria-valuemax="100">
-                                    <span>{{ wishmap.wm_progress }}%</span>
+                                    <span class="wishmap-body-font">{{ wishmap.wm_progress }}%</span>
                                 </div>
                             </div>
-                            {% if wishmap.c_name is not null %}
-                                <p class="card-text category">{{ wishmap.c_name }}</p>
-                            {% endif %}
-
-                            <p class="card-text description">{{ wishmap.wm_description }}</p>
+                            <p class="card-text btn-info wishmap-category">{{ wishmap.c_name }}</p>
+                            <p class="card-text wishmap-body-font">{{ wishmap.wm_description }}</p>
                             <div class="row">
-                                {% if (wishmap.wm_startDate) %}
-                                    <label>Start date:</label>
-                                    <p class="card-text"
-                                       style="margin-left:10px ">{{ wishmap.wm_startDate|date('d-m-Y')|e }}</p>
-                                {% endif %}
-                                <label style="margin-left:10px ">Finish date:</label>
-                                <p class="card-text"
-                                   style="margin-left:10px ">{{ wishmap.wm_finishDate|date('d-m-Y') }} </p>
+                                <label class="wishmap-body-font">Start date:</label>
+                                <p class="card-text wishmap-body-font">
+                                    {{ wishmap.wm_startDate|date('d-m-Y')|e }}</p>
+                                <label class="wishmap-body-font">Finish date:</label>
+                                <p class="card-text wishmap-body-font"
+                                >{{ wishmap.wm_finishDate|date('d-m-Y') }} </p>
                             </div>
                         </div>
                         <div>
-                            <a class="btn btn-outline-warning" href="/wishmap/take-a-card/{{ wishmap.wm_id }}">
+                            <a class="btn btn-outline-warning wishmap-comment-update-button"
+                               href="{{ path('wish_map_take_card',{ id: wishmap.wm_id }) }}">
                                 Take a card</a>
-                            <a href="/wishmap/{{ wishmap.wm_id }}/comments" style="margin-left: 30px"><img
-                                        class="card-img-top"
-                                        style="width: 50px; height: 50px"
+                            <a href="{{ path('comments_show',{ wishmapId: wishmap.wm_id }) }}" class="wishmap-comments"><img
+                                        class="card-img-top wishmap-comments-image"
                                         src="{{ asset('uploads/fi-xtluxl-comment-square-thin.png') }}"
-                                        alt="Card image cap">
+                                        alt="comments">
                             </a>
-                            <span>{{ wishmap.count }}</span></div>
+                            <span class="wishmap-body-font">{{ wishmap.count }}</span></div>
 
                     </div>
                 </div>

@@ -41,10 +41,10 @@ class WishMapRepository extends ServiceEntityRepository
             ->innerJoin('wm.user', 'u')
             ->innerJoin('wm.category', 'c')
             ->leftJoin('wm.comments', 'com')
-            ->select('wm', 'c' ,'COUNT(com.id) as count')
+            ->select('wm', 'c', 'COUNT(com.id) as count')
             ->andWhere('u.isPrivate != 1')
             ->andWhere('wm.isArchived != 1')
-           ->groupBy('wm.id')
+            ->groupBy('wm.id')
             ->getQuery()
             ->getScalarResult();
     }
@@ -54,10 +54,13 @@ class WishMapRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('wm')
             ->innerJoin('wm.user', 'u')
             ->innerJoin('wm.category', 'c')
+            ->leftJoin('wm.comments', 'com')
+            ->select('wm', 'c', 'COUNT(com.id) as count')
             ->andWhere('c.name = :name')
             ->andWhere('u.isPrivate != 1')
             ->andWhere('wm.isArchived != 1')
             ->setParameter('name', $categoryName)
+            ->groupBy('wm.id')
             ->getQuery()
             ->getScalarResult();
     }

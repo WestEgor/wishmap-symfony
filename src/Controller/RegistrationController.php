@@ -41,8 +41,6 @@ class RegistrationController extends AbstractController
                 $imageName = $imageUploader->upload($userAvatar);
                 $user->setAvatar($imageName);
             }
-
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

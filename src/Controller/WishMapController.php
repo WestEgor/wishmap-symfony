@@ -41,12 +41,6 @@ class WishMapController extends AbstractController
                 'isArchived' => 0]);
         }
 
-        $test = [];
-
-        foreach ($wishMaps as $wm) {
-            $test[] = $wm->getComments()->count();
-        }
-
         $pagination = $paginator->paginate(
             $wishMaps,
             $request->query->getInt('page', 1),
@@ -55,12 +49,11 @@ class WishMapController extends AbstractController
 
         return $this->render('wish_map/index.html.twig', [
             'wishmaps' => $pagination,
-            'user' => $user,
-            'test' => $test
+            'user' => $user
         ]);
     }
 
-    #[Route('/wishmap/create', name: 'create_wish_map')]
+    #[Route('/wishmap/create', name: 'wish_map_create')]
     public function wishMapCreate(Request $request, ImageUploader $imageUploader): RedirectResponse|Response
     {
         $user = $this->getUser();
@@ -92,7 +85,7 @@ class WishMapController extends AbstractController
     }
 
 
-    #[Route('/wishmap/update/{id}', name: 'update_wishmap')]
+    #[Route('/wishmap/update/{id}', name: 'wish_map_update')]
     public function wishMapUpdate(int $id, ImageUploader $imageUploader, UserActionValidation $validation,
                                   WishMapRepository $wishMapRepository, Request $request): RedirectResponse|Response
     {
@@ -123,7 +116,7 @@ class WishMapController extends AbstractController
         ]);
     }
 
-    #[ROUTE('/wishmap/delete/{id}', name: 'wishmap_delete', methods: ['delete', 'get'])]
+    #[ROUTE('/wishmap/delete/{id}', name: 'wish_map_delete', methods: ['delete', 'get'])]
     public function deleteWishMap(int $id, WishMapRepository $wishMapRepository, UserActionValidation $validation)
     {
         if (!$validation->checkUserWishMapCard($wishMapRepository, $id)) {
@@ -145,7 +138,7 @@ class WishMapController extends AbstractController
     }
 
 
-    #[ROUTE('/wishmap/all', name: 'wishmap_all')]
+    #[ROUTE('/wishmap/all', name: 'wish_map_all')]
     public function showAllWishMapcards(WishMapRepository $wishMapRepository,
                                         Request $request, PaginatorInterface $paginator)
     {
@@ -165,7 +158,7 @@ class WishMapController extends AbstractController
         ]);
     }
 
-    #[ROUTE('/wishmap/take-a-card/{id}', name: 'wishmap_take_card')]
+    #[ROUTE('/wishmap/take-a-card/{id}', name: 'wish_map_take_card')]
     public function takeWishMapCard(int $id, WishMapRepository $wishMapRepository, UserActionValidation $validation)
     {
         if ($validation->checkUserWishMapCard($wishMapRepository, $id)) {
@@ -232,7 +225,7 @@ class WishMapController extends AbstractController
         ]);
     }
 
-    #[Route('/wishmap/archive/{id}', name: 'add_archive_wish_map', methods: ['get', 'post'])]
+    #[Route('/wishmap/archive/{id}', name: 'wish_map_add_archive', methods: ['get', 'post'])]
     public function addToArchive(int $id, UserActionValidation $validation,
                                  WishMapRepository $wishMapRepository)
     {
@@ -252,7 +245,7 @@ class WishMapController extends AbstractController
 
     }
 
-    #[Route('/wishmap/archive/unzip/{id}', name: 'unzip_wish_map', methods: ['get', 'post'])]
+    #[Route('/wishmap/archive/unzip/{id}', name: 'wish_map_unzip', methods: ['get', 'post'])]
     public function unzipWishMap(int $id,
                                  WishMapRepository $wishMapRepository)
     {

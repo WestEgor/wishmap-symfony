@@ -23,10 +23,10 @@ class WishMapType extends AbstractType
     {
         $builder
             ->add('name', TextType::class,
-                ['label' => 'Description',
+                ['label' => 'Card name',
                     'attr' => ['class' => 'form-control']])
             ->add('image', FileType::class, [
-                'label' => 'Image (JPEG)',
+                'label' => 'Image (JPEG/PNG)',
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['class' => 'form-label mt-4'],
