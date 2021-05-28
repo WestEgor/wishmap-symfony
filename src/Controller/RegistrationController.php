@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class RegistrationController
+ * Controller for registration new users
+ * @package App\Controller
+ */
 class RegistrationController extends AbstractController
 {
 
@@ -25,7 +30,12 @@ class RegistrationController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
     }
 
-
+    /**
+     * Registration of user
+     * @param Request $request
+     * @param ImageUploader $imageUploader
+     * @return Response
+     */
     #[Route('/registration', name: 'registration')]
     public function index(Request $request, ImageUploader $imageUploader): Response
     {
@@ -35,6 +45,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+            //in database sent encoded password
             $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
             $userAvatar = $form->get('avatar')->getData();
             if ($userAvatar) {

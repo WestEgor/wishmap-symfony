@@ -14,10 +14,21 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * Class UserController
+ * Controller for work with user
+ * @package App\Controller
+ */
 class UserController extends AbstractController
 {
 
-    #[Route('/user/update', name: 'profile_update')]
+    /**
+     * Updating profile of user
+     * @param ImageUploader $imageUploader
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/wishmap/user/update', name: 'profile_update')]
     public function profileUpdate(ImageUploader $imageUploader, Request $request): Response
     {
         $user = $this->getUser();
@@ -42,6 +53,13 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Method for searching users
+     * Return json of users nickname
+     * @param UserRepository $userRepository
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/wishmap/user', name: 'find_user')]
     public function userSuggest(UserRepository $userRepository, Request $request)
     {
@@ -50,7 +68,9 @@ class UserController extends AbstractController
         $serializer = new Serializer($normalizers, $encoders);
 
         $nickname = $request->query->get('user');
-        $user = $userRepository->findUserByNick($nickname);
+
+        $user = $userRepository->findUserByNick($nickname); //suggestions from user_searcher.js
+
         $userJson = $serializer->serialize($user, 'json');
         return new Response(
             $userJson,
@@ -58,7 +78,14 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route('/users', name: 'find_all_users')]
+    /**
+     * Return all users with no private accounts
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    #[Route('/wishmap/users', name: 'find_all_users')]
     public function findAllUsers(PaginatorInterface $paginator, Request $request, UserRepository $userRepository)
     {
         $users = $userRepository->findAllNoPrivate();
@@ -66,7 +93,7 @@ class UserController extends AbstractController
         $pagination = $paginator->paginate(
             $users,
             $request->query->getInt('page', 1),
-            10
+            10 //maximum values of users nicknames on page
         );
 
         return $this->render('user/all_profiles.html.twig', [

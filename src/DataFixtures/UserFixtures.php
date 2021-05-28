@@ -1,19 +1,24 @@
 <?php
 
-
 namespace App\DataFixtures;
-
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class UserFixtures
+ * @package App\DataFixtures
+ */
+
 class UserFixtures extends Fixture
 {
-
     private UserPasswordEncoderInterface $passwordEncoder;
 
+    /**
+     * References of users (for another fixtures)
+     */
     public const USER_REFERENCES = array('first_u', 'second_u', 'third_u', 'four_u',
         'five_u', 'six_u', 'seven_u', 'eight_u', 'nine_u', 'ten_u');
 

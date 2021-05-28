@@ -263,6 +263,14 @@ class WishMap
         $this->user = $user;
     }
 
+    /**
+     * Count date difference between start date and finish date
+     * Adding this difference to new start date
+     * @param DateTime $oldStartDate old start date
+     * @param DateTime $oldFinishDate old finish date
+     * @param DateTime $newStartDate our new start date
+     * @return DateTime|false
+     */
     public function countDateDifference(DateTime $oldStartDate, DateTime $oldFinishDate,
                                         DateTime $newStartDate)
     {

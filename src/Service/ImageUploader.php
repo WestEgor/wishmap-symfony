@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+
 class ImageUploader
 {
 
@@ -17,6 +18,12 @@ class ImageUploader
         $this->targetDirectory = $targetDirectory;
         $this->slugger = $slugger;
     }
+
+    /**
+     * Method for uploading file to database
+     * @param UploadedFile $file
+     * @return string|null
+     */
 
     public function upload(UploadedFile $file): ?string
     {

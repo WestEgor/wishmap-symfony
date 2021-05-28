@@ -12,6 +12,9 @@ use Doctrine\Persistence\ObjectManager;
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
 
+    /**
+     * References of comments (for another fixtures)
+     */
     public const COMMENTS_REFERENCES = array('first_com', 'second_com', 'third_com', 'four_com',
         'five_com', 'six_com', 'seven_com', 'eight_com', 'nine_com', 'ten_com', 'eleven', 'twelve', 'thirteen',
         'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty');

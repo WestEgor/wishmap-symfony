@@ -15,6 +15,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * Class UserType
+ * Form for registration of user
+ * @package App\Form
+ */
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

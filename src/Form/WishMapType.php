@@ -15,9 +15,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * Class WishMapType
+ * Form for creating/updating wish map cards
+ * @package App\Form
+ */
 class WishMapType extends AbstractType
 {
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

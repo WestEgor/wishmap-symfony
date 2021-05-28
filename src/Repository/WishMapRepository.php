@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\WishMap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,8 +19,12 @@ class WishMapRepository extends ServiceEntityRepository
         parent::__construct($registry, WishMap::class);
     }
 
-
-    public function wishMapsGetCategoryCount()
+    /**
+     * Query return name and count of each category
+     * Don`t read data from Private account and Archived wish map cards
+     * @return int|mixed[]|string
+     */
+    public function wishMapsGetCategoryCount(): array|int|string
     {
         return $this->createQueryBuilder('wm')
             ->innerJoin('wm.category', 'cat')
@@ -35,7 +38,12 @@ class WishMapRepository extends ServiceEntityRepository
             ->getScalarResult();
     }
 
-    public function wishMapsGetNotPrivateAccs()
+    /**
+     * Query return wish maps,categories and count of comment of each wish map
+     * Don`t read data from Private account and Archived wish map cards
+     * @return int|mixed[]|string
+     */
+    public function wishMapsGetNotPrivateAccs(): array|int|string
     {
         return $this->createQueryBuilder('wm')
             ->innerJoin('wm.user', 'u')
@@ -49,7 +57,13 @@ class WishMapRepository extends ServiceEntityRepository
             ->getScalarResult();
     }
 
-    public function wishMapsGetNotPrivateAccs_withCategoryName(string $categoryName)
+    /**
+     * Query return all category with same name
+     * Don`t read data from Private account and Archived wish map cards
+     * @param string $categoryName
+     * @return int|mixed[]|string
+     */
+    public function wishMapsGetNotPrivateAccs_withCategoryName(string $categoryName): array|int|string
     {
         return $this->createQueryBuilder('wm')
             ->innerJoin('wm.user', 'u')

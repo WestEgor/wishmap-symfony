@@ -37,7 +37,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
 
-    public function findUserByNick($suggest)
+    /**
+     * Query return nicknames of users by suggestions
+     * @param $suggest
+     * @return mixed
+     */
+    public function findUserByNick($suggest): mixed
     {
         return $this->createQueryBuilder('u')
             ->select('u.nickname')
@@ -50,7 +55,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
-    public function findAllNoPrivate()
+    /**
+     * Query return all no privates accounts
+     * @return mixed
+     */
+    public function findAllNoPrivate(): mixed
     {
         return $this->createQueryBuilder('u')
             ->select('u.nickname')

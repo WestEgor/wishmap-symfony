@@ -8,7 +8,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class CategoryFixtures extends Fixture
 {
-
+    /**
+     * References of categories (for another fixtures)
+     */
     public const CATEGORY_REFERENCES = array('first_c', 'second_c', 'third_c', 'four_c',
         'five_c', 'six_c', 'seven_c', 'eight_c', 'nine_c', 'ten_c');
 
