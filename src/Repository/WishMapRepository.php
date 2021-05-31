@@ -39,6 +39,27 @@ class WishMapRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query return name and count of user category
+     * Don`t read data from archived wish map cards
+     * @param string $nickname nickname of user
+     * @return int|mixed[]|string
+     */
+    public function wishMapsGetUserCategoryCount(string $nickname): array|int|string
+    {
+        return $this->createQueryBuilder('wm')
+            ->innerJoin('wm.category', 'cat')
+            ->innerJoin('wm.user', 'u')
+            ->select('cat.name, COUNT(wm.category) AS count')
+            ->andWhere('cat.id = wm.category')
+            ->andWhere('u.nickname = :name')
+            ->andWhere('wm.isArchived != 1')
+            ->setParameter('name', $nickname)
+            ->groupBy('wm.category')
+            ->getQuery()
+            ->getScalarResult();
+    }
+
+    /**
      * Query return wish maps,categories and count of comment of each wish map
      * Don`t read data from Private account and Archived wish map cards
      * @return int|mixed[]|string
@@ -52,6 +73,28 @@ class WishMapRepository extends ServiceEntityRepository
             ->select('wm', 'c', 'COUNT(com.id) as count')
             ->andWhere('u.isPrivate != 1')
             ->andWhere('wm.isArchived != 1')
+            ->groupBy('wm.id')
+            ->getQuery()
+            ->getScalarResult();
+    }
+
+    /**
+     * Query return wish maps,categories and count of comment of each wish map
+     * Don`t read data from Private account and Archived wish map cards
+     * @param string $nickname
+     * @return int|mixed[]|string
+     */
+    public function wishMapsGetAccByNickname(string $nickname): array|int|string
+    {
+        return $this->createQueryBuilder('wm')
+            ->innerJoin('wm.user', 'u')
+            ->innerJoin('wm.category', 'c')
+            ->leftJoin('wm.comments', 'com')
+            ->select('wm', 'c', 'COUNT(com.id) as count')
+            ->andWhere('u.nickname=:name')
+            ->andWhere('u.isPrivate != 1')
+            ->andWhere('wm.isArchived != 1')
+            ->setParameter('name', $nickname)
             ->groupBy('wm.id')
             ->getQuery()
             ->getScalarResult();

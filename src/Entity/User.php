@@ -48,7 +48,7 @@ class User implements UserInterface
 
 
     /**
-     * @ORM\Column(type="string", length=50, unique=false, nullable=false)
+     * @ORM\Column(type="string", length=255, unique=false, nullable=false)
      */
     private string $profileDescription;
 

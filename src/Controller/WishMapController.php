@@ -46,13 +46,31 @@ class WishMapController extends AbstractController
                     'USER DOESNT EXIST OR IT`S PRIVATE ACCOUNT!');
                 return $this->forward('App\Controller\WishMapController::index');
             }
-            $wishMaps = $wishMapRepository->findBy(['user' => $user,
-                'isArchived' => 0]); // archive cards doesnt display
-        } else { // if no requests we return wish map of current user
-            $user = $this->getUser();
-            $wishMaps = $wishMapRepository->findBy(['user' => $user,
-                'isArchived' => 0]); //archived cards dont display
+           /* $wishMaps = $wishMapRepository->findBy(['user' => $user,
+                'isArchived' => 0]); // archive cards doesnt display*/
+
+            $wishMaps = $wishMapRepository->wishMapsGetAccByNickname($user->getNickname());
+            $categoryCounter = $wishMapRepository->wishMapsGetUserCategoryCount($nickname);
+
+            $pagination = $paginator->paginate(
+                $wishMaps,
+                $request->query->getInt('page', 1),
+                4 //maximal value of wish map cards on page
+            );
+
+            return $this->render('wish_map/wish_maps_all.twig', [
+                'wishmaps' => $pagination,
+                'wmCategoryCounter' => $categoryCounter
+            ]);
+
         }
+
+
+        // if no requests we return wish map of current user
+        $user = $this->getUser();
+        $wishMaps = $wishMapRepository->findBy(['user' => $user,
+            'isArchived' => 0]); //archived cards dont display
+
 
         $pagination = $paginator->paginate(
             $wishMaps,
