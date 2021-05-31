@@ -1,6 +1,7 @@
 # wishmap-symfony
 ## About the project
 Site planner for your big and small wishes, which are visualized as cards, giving them a due date with a progress bar. Thus, our wishes are our goal. Allows other users to view and comment on other people's cards, if their account is not private, take into service other people's wishes/goals.
+![Wish map home page](https://github.com/WestEgor/wishmap-symfony/blob/master/images/wish%20maps/wish_map_home_page.PNG?raw=true)
 ### Built with
 * PHP 8.0;
 * MySQL 5.7;
