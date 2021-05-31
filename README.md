@@ -22,6 +22,8 @@ Site planner for your big and small wishes, which are visualized as cards, givin
 * css;
 * bootstrap.
 ### Project structure
++ Directory structure
++ Tables structure [click](https://github.com/WestEgor/wishmap-symfony/blob/master/images/table_structures.PNG)
 ## Getting started
 1. You need to install PHP 8.* [click](https://www.php.net/downloads.php)
 2. Install and setting up the Symfony [click](https://symfony.com/doc/current/setup.html)
