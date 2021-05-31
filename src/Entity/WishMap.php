@@ -70,7 +70,7 @@ class WishMap
     private bool $isArchived;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Comments", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="Comments")
      * @ORM\JoinTable(name="wish_map_comments",
      *      joinColumns={@ORM\JoinColumn(name="wish_map_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id",
@@ -79,6 +79,13 @@ class WishMap
      */
     private $comments;
 
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = 0;
+        }
+        $this->comments = new ArrayCollection();
+    }
 
     public function __construct()
     {

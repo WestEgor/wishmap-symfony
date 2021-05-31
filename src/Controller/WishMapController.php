@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function DeepCopy\deep_copy;
 
 use DateTime;
 
@@ -46,8 +47,8 @@ class WishMapController extends AbstractController
                     'USER DOESNT EXIST OR IT`S PRIVATE ACCOUNT!');
                 return $this->forward('App\Controller\WishMapController::index');
             }
-           /* $wishMaps = $wishMapRepository->findBy(['user' => $user,
-                'isArchived' => 0]); // archive cards doesnt display*/
+            /* $wishMaps = $wishMapRepository->findBy(['user' => $user,
+                 'isArchived' => 0]); // archive cards doesnt display*/
 
             $wishMaps = $wishMapRepository->wishMapsGetAccByNickname($user->getNickname());
             $categoryCounter = $wishMapRepository->wishMapsGetUserCategoryCount($nickname);
@@ -237,7 +238,10 @@ class WishMapController extends AbstractController
                 'YOU ARE CANNOT TAKE YOUR OWN CARD!');
             return $this->forward('App\Controller\WishMapController::index');
         }
+
         //we are adding to us, without deleting
+
+
         $wishMap = clone $wishMapRepository->find($id);
         //get date from this wish map cards, to change them further
         $oldStartDate = $wishMap->getStartDate();
@@ -246,10 +250,8 @@ class WishMapController extends AbstractController
         $wishMap->setUser($this->getUser());
         $wishMap->setProgress(0);
         $wishMap->setStartDate(new DateTime('now'));
-        $wishMap->getComments()->clear();
         //to set finish date we need first to get difference of old wish map cards
         //then add to new start date this difference
-        $wishMap->setFinishDate($wishMap->countDateDifference($oldStartDate, $oldFinishDate, new DateTime('now')));
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($wishMap);
         $entityManager->flush();
