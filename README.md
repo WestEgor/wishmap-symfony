@@ -28,6 +28,8 @@ Site planner for your big and small wishes, which are visualized as cards, givin
 1. You need to install PHP 8.* [click](https://www.php.net/downloads.php)
 2. Install composer [click](https://getcomposer.org/download/)
 3. Install and setting up the Symfony [click](https://symfony.com/doc/current/setup.html)
+4. Change .env file.
+  > DATABASE_URL you need to establish connection with database
 ## Roadmap
 Roadmap you can see [hear](https://github.com/WestEgor/wishmap-symfony/commits/master)
 ## Usage
