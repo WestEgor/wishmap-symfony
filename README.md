@@ -22,30 +22,12 @@ Site planner for your big and small wishes, which are visualized as cards, givin
 * css;
 * bootstrap.
 ### Project structure
-+ Directory structure
-  .
-+ -- _config.yml
-+ -- _drafts
-|   + -- begin-with-the-crazy-ideas.textile
-|   + -- on-simplicity-in-technology.markdown
-+ -- _includes
-|   + -- footer.html
-|   + -- header.html
-+ -- _layouts
-|   +-- default.html
-|   +-- post.html
-+ -- _posts
-|   + -- 2007-10-29-why-every-programmer-should-play-nethack.textile
-|   + -- 2009-04-26-barcamp-boston-4-roundup.textile
-+ -- _data
-|   + -- members.yml
-+ -- _site
-+ -- index.html
-
++ Directory structure [click] (https://github.com/WestEgor/wishmap-symfony/tree/master/images/directory_structure)
 + Tables structure [click](https://github.com/WestEgor/wishmap-symfony/blob/master/images/table_structures.PNG)
 ## Getting started
 1. You need to install PHP 8.* [click](https://www.php.net/downloads.php)
-2. Install and setting up the Symfony [click](https://symfony.com/doc/current/setup.html)
+2. Install composer [clicl](https://getcomposer.org/download/)
+3. Install and setting up the Symfony [click](https://symfony.com/doc/current/setup.html)
 ## Roadmap
 Roadmap you can see [hear](https://github.com/WestEgor/wishmap-symfony/commits/master)
 ## Usage
