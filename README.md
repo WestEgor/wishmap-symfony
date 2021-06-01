@@ -14,7 +14,7 @@ Site planner for your big and small wishes, which are visualized as cards, givin
   * services;
   * security;
   * serializer.
-* Knp paginator bundle for Symfonyl
+* Knp paginator bundle for Symfony
 * Javascript:
   * AJAX;
   * jQuery;
@@ -22,11 +22,11 @@ Site planner for your big and small wishes, which are visualized as cards, givin
 * css;
 * bootstrap.
 ### Project structure
-+ Directory structure [click] (https://github.com/WestEgor/wishmap-symfony/tree/master/images/directory_structure)
++ Directory structure [click](https://github.com/WestEgor/wishmap-symfony/tree/master/images/directory_structure)
 + Tables structure [click](https://github.com/WestEgor/wishmap-symfony/blob/master/images/table_structures.PNG)
 ## Getting started
 1. You need to install PHP 8.* [click](https://www.php.net/downloads.php)
-2. Install composer [clicl](https://getcomposer.org/download/)
+2. Install composer [click](https://getcomposer.org/download/)
 3. Install and setting up the Symfony [click](https://symfony.com/doc/current/setup.html)
 ## Roadmap
 Roadmap you can see [hear](https://github.com/WestEgor/wishmap-symfony/commits/master)
